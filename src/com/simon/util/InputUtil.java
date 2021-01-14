@@ -1,4 +1,4 @@
-package com.simon.uitl;
+package com.simon.util;
 
 import java.util.Scanner;
 
@@ -12,8 +12,7 @@ public class InputUtil {
             return new int[0];
         }
         String[] s = str.replaceAll("\"", "").split(",");
-        int[] a = getIntArrByStrArr(s);
-        return a;
+        return getIntArrByStrArr(s);
     }
     public static int[] getIntArrByStrArr(String[] s) {
         int[] a = new int[s.length];

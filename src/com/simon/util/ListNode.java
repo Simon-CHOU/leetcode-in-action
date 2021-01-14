@@ -1,4 +1,4 @@
-package com.simon.uitl;
+package com.simon.util;
 
 public class ListNode {
     public int val;
@@ -11,11 +11,11 @@ public class ListNode {
     public String toString() {
         StringBuilder str=new StringBuilder();
         str.append("[").append(val);
-        if(next == null){
-            return str.append("]").toString();
-        }
+//        if(next == null){
+//            return str.append("]").toString();
+//        }
         ListNode p=next;
-        while(p.next!=null){
+        while(p!=null){
             str.append(",").append(p.val);
             p = p.next;
         }

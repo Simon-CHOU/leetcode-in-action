@@ -1,4 +1,4 @@
-package com.simon.uitl;
+package com.simon.util;
 
 public class LinkedList {
     private ListNode head;
