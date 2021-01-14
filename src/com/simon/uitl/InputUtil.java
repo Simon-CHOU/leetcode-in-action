@@ -7,7 +7,10 @@ public class InputUtil {
 
     public static int[] inputIntArray() {
         System.out.print("#Please Input:");
-        String str = scanner.next();
+        String str = scanner.nextLine();//.next()不能接收空字符串换行
+        if(str.equals("")){
+            return new int[0];
+        }
         String[] s = str.replaceAll("\"", "").split(",");
         int[] a = getIntArrByStrArr(s);
         return a;
