@@ -24,4 +24,8 @@ public class InputUtil {
     public static int inputInt(){
         return scanner.nextInt();
     }
+    public static String inputStr(){
+        System.out.print("#Please Input:");
+        return scanner.nextLine();
+    }
 }
