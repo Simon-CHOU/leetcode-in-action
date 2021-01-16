@@ -24,14 +24,16 @@ public class Main {
 
 class Solution {
     public int lengthOfLastWord(String s) {
-        StringTokenizer st = new StringTokenizer(s);
-        List<String> res = new ArrayList<>();
-        while (st.hasMoreTokens()) {
-            res.add(st.nextToken());
+        s = s.trim();
+        int count = 0;
+        for (int i = s.length() - 1; i >= 0; i--) {
+            char c = s.charAt(i);
+            if (c == ' ') {
+                break;
+            } else {
+                count++;
+            }
         }
-        if(res.size()==0){
-            return 0;
-        }
-        return res.get(res.size() - 1).length();
+        return count;
     }
 }
