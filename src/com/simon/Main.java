@@ -13,8 +13,9 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            String str = InputUtil.inputStr();
-            System.out.println(solution.lengthOfLastWord(str));
+            int[] ints = InputUtil.inputIntArray();
+            int i = InputUtil.inputIntMatrix();
+            System.out.println(solution.checkStraightLine(ints, i));
         }
     }
 
@@ -23,17 +24,20 @@ public class Main {
 
 
 class Solution {
-    public int lengthOfLastWord(String s) {
-        s = s.trim();
-        int count = 0;
-        for (int i = s.length() - 1; i >= 0; i--) {
-            char c = s.charAt(i);
-            if (c == ' ') {
-                break;
-            } else {
-                count++;
+    public boolean checkStraightLine(int[][] coordinates) {
+        int deltaX = coordinates[0][0], deltaY = coordinates[0][1];
+        int n = coordinates.length;
+        for (int i = 0; i < n; i++) {
+            coordinates[i][0] -= deltaX;
+            coordinates[i][1] -= deltaY;
+        }
+        int A = coordinates[1][1], B = -coordinates[1][0];
+        for (int i = 2; i < n; i++) {
+            int x = coordinates[i][0], y = coordinates[i][1];
+            if (A * x + B * y != 0) {
+                return false;
             }
         }
-        return count;
+        return true;
     }
 }
