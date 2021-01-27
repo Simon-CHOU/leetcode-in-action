@@ -14,8 +14,8 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             int[] ints = InputUtil.inputIntArray();
-            int i = InputUtil.inputIntMatrix();
-            System.out.println(solution.checkStraightLine(ints, i));
+//            int i = InputUtil.inputIntMatrix();
+//            System.out.println(solution.checkStraightLine(ints, i));
         }
     }
 
