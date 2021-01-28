@@ -1,8 +1,6 @@
 package com.simon;
 
-import com.simon.util.InputUtil;
-import com.simon.util.LinkedList;
-import com.simon.util.ListNode;
+import com.simon.util.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +11,9 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            int[] ints = InputUtil.inputIntArray();
+            TreeNode treeNode = InputTreeUtil.inputBtree();
+//            solution.invertTree(treeNode);
+            InputTreeUtil.displayBTreeVertically(treeNode);
 //            int i = InputUtil.inputIntMatrix();
 //            System.out.println(solution.checkStraightLine(ints, i));
         }
@@ -24,20 +24,15 @@ public class Main {
 
 
 class Solution {
-    public boolean checkStraightLine(int[][] coordinates) {
-        int deltaX = coordinates[0][0], deltaY = coordinates[0][1];
-        int n = coordinates.length;
-        for (int i = 0; i < n; i++) {
-            coordinates[i][0] -= deltaX;
-            coordinates[i][1] -= deltaY;
+    public TreeNode invertTree(TreeNode root) {
+        if(root == null) {
+            return null;
         }
-        int A = coordinates[1][1], B = -coordinates[1][0];
-        for (int i = 2; i < n; i++) {
-            int x = coordinates[i][0], y = coordinates[i][1];
-            if (A * x + B * y != 0) {
-                return false;
-            }
-        }
-        return true;
+        TreeNode tmp = root.left;
+        root.left = root.right;
+        root.right = tmp;
+        invertTree(root.left);
+        invertTree(root.right);
+        return root;
     }
 }
