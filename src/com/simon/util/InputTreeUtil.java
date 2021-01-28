@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class InputTreeUtil {
     public static void displayBTreeVertically(TreeNode root) {
-        if(root != null) {
+        if (root != null) {
             System.out.print(root.val + " ");
             displayBTreeVertically(root.left);
             displayBTreeVertically(root.right);
@@ -16,9 +16,9 @@ public class InputTreeUtil {
 
     public static TreeNode inputBtree() {
         Scanner scanner = new Scanner(System.in);
-        String[] a = scanner.nextLine().trim().replaceAll(" ","").replaceAll("[\\[\\]]", "").split(",");// [4,2,7,1,3,6,9]
-        int [] intArr = new int[a.length];
-        Integer [] INTArr = new Integer[a.length];
+        String[] a = scanner.nextLine().trim().replaceAll(" ", "").replaceAll("[\\[\\]]", "").split(",");// [4,2,7,1,3,6,9]
+        int[] intArr = new int[a.length];
+        Integer[] INTArr = new Integer[a.length];
         for (int i = 0; i < a.length; i++) {
             INTArr[i] = a[i].equals("null") ? null : Integer.parseInt(a[i]);
             intArr[i] = a[i].equals("null") ? -1 : Integer.parseInt(a[i]);
@@ -41,7 +41,7 @@ public class InputTreeUtil {
      * @return
      */
     public static TreeNode constructBTreeByArray(int[] arr, TreeNode root, int index) {
-        if( index < arr.length) {
+        if (index < arr.length) {
             TreeNode tmp = new TreeNode(arr[index], null, null);
             root = tmp;
             root.left = constructBTreeByArray(arr, root.left, 2 * index + 1);
@@ -53,11 +53,12 @@ public class InputTreeUtil {
     /**
      * 支持null
      * https://stackoverflow.com/questions/37941318/how-to-build-an-incomplete-binary-tree-from-array-representation
+     *
      * @param array
      * @return
      */
-    public static  TreeNode createTree(Integer[] array){
-        if(array == null || array.length == 0){
+    public static TreeNode createTree(Integer[] array) {
+        if (array == null || array.length == 0) {
             return null;
         }
         Queue<TreeNode> treeNodeQueue = new LinkedList<>();
@@ -69,16 +70,16 @@ public class InputTreeUtil {
         TreeNode treeNode = new TreeNode(array[0]);
         treeNodeQueue.offer(treeNode);
 
-        while (!integerQueue.isEmpty()){
+        while (!integerQueue.isEmpty()) {
             Integer leftVal = integerQueue.isEmpty() ? null : integerQueue.poll();
             Integer rightVal = integerQueue.isEmpty() ? null : integerQueue.poll();
             TreeNode current = treeNodeQueue.poll();
-            if(leftVal != -1){
+            if (leftVal != null) {
                 TreeNode left = new TreeNode(leftVal);
                 current.left = left;
                 treeNodeQueue.offer(left);
             }
-            if(rightVal !=-1){
+            if (rightVal != null) {
                 TreeNode right = new TreeNode(rightVal);
                 current.right = right;
                 treeNodeQueue.offer(right);

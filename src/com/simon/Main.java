@@ -12,11 +12,9 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            int[] nums = InputUtil.inputIntArray();
-            int i = solution.pivotIndex(nums);
-            System.out.println(i);
+            TreeNode treeNode = InputTreeUtil.inputBtree();
 //            int i = InputUtil.inputIntMatrix();
-//            System.out.println(solution.checkStraightLine(ints, i));
+            System.out.println(solution.minDepth(treeNode));
         }
     }
 
@@ -25,15 +23,20 @@ public class Main {
 
 
 class Solution {
-    public int pivotIndex(int[] nums) {
-        int total = Arrays.stream(nums).sum();
-        int sum = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (2 * sum + nums[i] == total) {//sum=total−numsi−sum   left == right
-                return i;
-            }
-            sum += nums[i];
+    public int minDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
         }
-        return -1;
+        if (root.left == null && root.right == null) {
+            return 1;
+        }
+        int min_depth = Integer.MAX_VALUE;
+        if (root.left != null) {
+            min_depth = Math.min(minDepth(root.left), min_depth);
+        }
+        if (root.right != null) {
+            min_depth = Math.min(minDepth(root.right), min_depth);
+        }
+        return min_depth + 1;
     }
 }
