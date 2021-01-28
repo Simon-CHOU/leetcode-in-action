@@ -3,6 +3,7 @@ package com.simon;
 import com.simon.util.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -25,29 +26,14 @@ public class Main {
 
 class Solution {
     public int pivotIndex(int[] nums) {
-        int pivot = -1;
+        int total = Arrays.stream(nums).sum();
+        int sum = 0;
         for (int i = 0; i < nums.length; i++) {
-            if (leftSum(nums, i) == rightSum(nums, i)) {
-                pivot = i;
-                break;
+            if (2 * sum + nums[i] == total) {//sum=total−numsi−sum   left == right
+                return i;
             }
-        }
-        return pivot;
-    }
-
-    int leftSum(int[] nums, int index) {
-        int sum = 0;
-        for (int i = 0; i < index; i++) {
             sum += nums[i];
         }
-        return sum;
-    }
-
-    int rightSum(int[] nums, int index) {
-        int sum = 0;
-        for (int i = index + 1; i < nums.length; i++) {
-            sum += nums[i];
-        }
-        return sum;
+        return -1;
     }
 }
