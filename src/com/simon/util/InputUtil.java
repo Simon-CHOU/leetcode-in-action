@@ -11,7 +11,7 @@ public class InputUtil {
         if(str.equals("")){
             return new int[0];
         }
-        String[] s = str.replaceAll("\"", "").split(",");
+        String[] s = str.replaceAll(" ","").replaceAll("[\\[|\\]]","").replaceAll("\"", "").split(",");
         return getIntArrByStrArr(s);
     }
     public static int[] getIntArrByStrArr(String[] s) {

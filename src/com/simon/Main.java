@@ -11,9 +11,9 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            TreeNode treeNode = InputTreeUtil.inputBtree();
-//            solution.invertTree(treeNode);
-            InputTreeUtil.displayBTreeVertically(treeNode);
+            int[] nums = InputUtil.inputIntArray();
+            int i = solution.pivotIndex(nums);
+            System.out.println(i);
 //            int i = InputUtil.inputIntMatrix();
 //            System.out.println(solution.checkStraightLine(ints, i));
         }
@@ -24,15 +24,30 @@ public class Main {
 
 
 class Solution {
-    public TreeNode invertTree(TreeNode root) {
-        if(root == null) {
-            return null;
+    public int pivotIndex(int[] nums) {
+        int pivot = -1;
+        for (int i = 0; i < nums.length; i++) {
+            if (leftSum(nums, i) == rightSum(nums, i)) {
+                pivot = i;
+                break;
+            }
         }
-        TreeNode tmp = root.left;
-        root.left = root.right;
-        root.right = tmp;
-        invertTree(root.left);
-        invertTree(root.right);
-        return root;
+        return pivot;
+    }
+
+    int leftSum(int[] nums, int index) {
+        int sum = 0;
+        for (int i = 0; i < index; i++) {
+            sum += nums[i];
+        }
+        return sum;
+    }
+
+    int rightSum(int[] nums, int index) {
+        int sum = 0;
+        for (int i = index + 1; i < nums.length; i++) {
+            sum += nums[i];
+        }
+        return sum;
     }
 }
