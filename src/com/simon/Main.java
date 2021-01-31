@@ -11,8 +11,8 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             TreeNode treeNode = InputTreeUtil.inputBtree();
-//            int i = InputUtil.inputIntMatrix();
-            System.out.println(solution.minDepth(treeNode));
+            int i = InputUtil.inputInt();
+            System.out.println(solution.hasPathSum(treeNode, i));
         }
     }
 
@@ -21,35 +21,36 @@ public class Main {
 
 
 class Solution {
-    class QueueNode {
-        TreeNode node;
-        int depth;
-        public QueueNode(TreeNode node, int depth){
-            this.node = node;
-            this.depth = depth;
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if (root == null) {
+            return false;
         }
-    }
-    public int minDepth(TreeNode root) {
-        if(root == null) {
-            return 0;
-        }
-
-        Queue<QueueNode> queue = new LinkedList<>();
-        queue.offer(new QueueNode(root, 1));
-        while(!queue.isEmpty()){
-            QueueNode nodeDepth = queue.poll();
-            TreeNode node = nodeDepth.node;
-            int depth = nodeDepth.depth;
-            if(node.left == null && node.right ==null){
-                return depth;
+        Queue<TreeNode> queNode = new LinkedList<>();
+        Queue<Integer> queVal = new LinkedList<>();
+        queNode.offer(root);
+        queVal.offer(root.val);
+        while (!queNode.isEmpty()) {
+            TreeNode now = queNode.poll();
+            int temp = queVal.poll();
+            if (now.left == null && now.right == null) {
+                if (temp == targetSum) {
+                    return true;
+                }
+                continue;
             }
-            if( node.left != null){
-                queue.offer(new QueueNode(node.left, depth + 1));
+            if (now.left != null) {
+                queNode.offer(now.left);
+                queVal.offer(now.left.val + temp);
             }
-            if( node.right != null){
-                queue.offer(new QueueNode(node.right, depth + 1));
+            if (now.right != null) {
+                queNode.offer(now.right);
+                queVal.offer(now.right.val + temp);
             }
         }
-        return 0;
+        return false;
     }
 }
+/*
+ 输入：root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
+ 输出：true
+*/

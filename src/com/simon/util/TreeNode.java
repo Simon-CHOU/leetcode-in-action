@@ -3,7 +3,7 @@ package com.simon.util;
 //Definition for a binary tree node.
 //https://leetcode-cn.com/problems/invert-binary-tree/
 public class TreeNode {
-    int val;
+    public int val;
     public TreeNode left;
     public TreeNode right;
 
