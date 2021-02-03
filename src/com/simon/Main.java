@@ -10,9 +10,9 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            TreeNode treeNode = InputTreeUtil.inputBtree();
-            int i = InputUtil.inputInt();
-            System.out.println(solution.hasPathSum(treeNode, i));
+            String str = InputUtil.inputStr();
+            int k = InputUtil.inputInt();
+            System.out.println(solution.characterReplacement(str, k));
         }
     }
 
@@ -21,18 +21,34 @@ public class Main {
 
 
 class Solution {
-    public boolean hasPathSum(TreeNode root, int targetSum) {
-        if (root == null) {
-            return false;
+    public int characterReplacement(String s, int k) {
+        int len = s.length();
+        if (len < 2) {
+            return len;
         }
-        if (root.left == null && root.right == null) {
-            return targetSum == root.val;
+        char[] charArray = s.toCharArray();
+        int left = 0;
+        int right = 0;
+        int res = 0;
+        int maxCount = 0;
+        int[] freq = new int[26];
+        while (right < len) {
+            freq[charArray[right] - 'A']++;
+            maxCount = Math.max(maxCount, freq[charArray[right] - 'A']);
+            right++;
+
+            if (right - left > maxCount + k) {
+                freq[charArray[left] - 'A']--;
+                left++;
+            }
+            res = Math.max(res, right - left);
         }
-        return hasPathSum(root.left, targetSum - root.val)
-                || hasPathSum(root.right, targetSum - root.val);
+        return res;
     }
 }
 /*
- 输入：root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
- 输出：true
-*/
+输入：s = "ABAB", k = 2
+输出：4
+输入：s = "AABABBA", k = 1
+输出：4
+ */
