@@ -26,13 +26,14 @@ class Solution {
         return (int) (secondSmall == Long.MAX_VALUE ? -1 : secondSmall);
     }
 
-    long traversal(TreeNode root, long num, long cur) {
-        if (root == null) return cur;
+    long traversal(TreeNode root, long num, long secMin) {
+        if (root == null) return secMin;
         if (root.val > num) {
-            cur = Math.min(cur, root.val);
+            secMin = Math.min(secMin, root.val);
         }
-        return Math.min(traversal(root.left, num, cur),
-                traversal(root.right, num, cur));
+        long leftMinVal = traversal(root.left, num, secMin);
+        long rightMinVal = traversal(root.right, num, secMin);
+        return Math.min(leftMinVal, rightMinVal);
     }
 }
 /*
