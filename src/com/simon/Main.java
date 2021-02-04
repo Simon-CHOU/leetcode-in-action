@@ -21,26 +21,24 @@ public class Main {
 
 
 class Solution {
-    List<Integer> arr = new ArrayList<>();
-
     public int findSecondMinimumValue(TreeNode root) {
-        traversal(root);
-        List<Integer> collect = arr.stream().sorted().collect(Collectors.toList());
-        if (collect.size() < 2) {
-            return -1;
-        }
-        Integer secondSmall = collect.get(1);
-        return secondSmall;
+        long secondSmall = traversal(root, root.val, Long.MAX_VALUE);
+        return (int) (secondSmall == Long.MAX_VALUE ? -1 : secondSmall);
     }
 
-    void traversal(TreeNode root) {
-        if (root == null) return;
-        int val = root.val;
-        if (!arr.contains(val)) {
-            arr.add(val);
+    long traversal(TreeNode root, long num, long cur) {
+        if (root == null) return cur;
+        if (root.val > num) {
+            cur = Math.min(cur, root.val);
         }
-        traversal(root.left);
-        traversal(root.right);
-
+        return Math.min(traversal(root.left, num, cur),
+                traversal(root.right, num, cur));
     }
 }
+/*
+输入：root = [2,2,5,null,null,5,7]
+输出：5
+
+输入：root = [2,2,2147483647]
+输出：2147483647 (integer 最大值)
+ */
