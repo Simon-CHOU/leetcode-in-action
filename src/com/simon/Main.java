@@ -11,7 +11,8 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             TreeNode treeNode = InputTreeUtil.inputBtree();
-            System.out.println(solution.isSymmetric(treeNode));
+            DisplayTreeUtil.levelOrderTraversal(treeNode);
+//            System.out.println(solution.isSymmetric(treeNode));
         }
     }
 
