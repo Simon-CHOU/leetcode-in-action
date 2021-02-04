@@ -12,7 +12,7 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             TreeNode treeNode = InputTreeUtil.inputBtree();
-            System.out.println(solution.findSecondMinimumValue(treeNode));
+            System.out.println(solution.isSymmetric(treeNode));
         }
     }
 
@@ -21,25 +21,12 @@ public class Main {
 
 
 class Solution {
-    public int findSecondMinimumValue(TreeNode root) {
-        long secondSmall = traversal(root, root.val, Long.MAX_VALUE);
-        return (int) (secondSmall == Long.MAX_VALUE ? -1 : secondSmall);
+    public boolean isSymmetric(TreeNode root) {
+        return check(root, root);
     }
-
-    long traversal(TreeNode root, long num, long secMin) {
-        if (root == null) return secMin;
-        if (root.val > num) {
-            secMin = Math.min(secMin, root.val);
-        }
-        long leftMinVal = traversal(root.left, num, secMin);
-        long rightMinVal = traversal(root.right, num, secMin);
-        return Math.min(leftMinVal, rightMinVal);
+    boolean check(TreeNode p, TreeNode q) {
+        if (p == null && q == null) return true;
+        if (p == null || q == null) return false;
+        return p.val == q.val && check(p.left, q.right) && check(p.right, q.left);
     }
 }
-/*
-输入：root = [2,2,5,null,null,5,7]
-输出：5
-
-输入：root = [2,2,2147483647]
-输出：2147483647 (integer 最大值)
- */
