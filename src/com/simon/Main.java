@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             TreeNode treeNode = InputTreeUtil.inputBtree();
-            DisplayTreeUtil.levelOrderTraversal(treeNode);
+            System.out.println(DisplayTreeUtil.maxDepth(treeNode));
 //            System.out.println(solution.isSymmetric(treeNode));
         }
     }
