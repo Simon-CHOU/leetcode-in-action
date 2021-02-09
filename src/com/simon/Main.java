@@ -2,6 +2,9 @@ package com.simon;
 
 import com.simon.util.*;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class Main {
     private static Solution solution = new Solution();
 
@@ -19,16 +22,23 @@ public class Main {
 class Solution {
     public int sumOfLeftLeaves(TreeNode root) {
         if (root == null) return 0;
-        return dfs(root);
-    }
-
-    private int dfs(TreeNode root) {
         int res = 0;
-        if (root.left != null) {
-            res += isLeafNode(root.left) ? root.left.val : dfs(root.left);
-        }
-        if (root.right != null && !isLeafNode(root.right)) {
-            res += dfs(root.right);
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            TreeNode temp = queue.poll();
+            if (temp.left != null) {
+                if (isLeafNode(temp.left)) {
+                    res += temp.left.val;
+                } else {
+                    queue.offer(temp.left);
+                }
+            }
+            if (temp.right != null) {
+                if (!isLeafNode(temp.right)) {
+                    queue.offer(temp.right);
+                }
+            }
         }
         return res;
     }
