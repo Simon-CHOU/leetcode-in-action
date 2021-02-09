@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             TreeNode treeNode = InputTreeUtil.inputBtree();
-            System.out.println(solution.diameterOfBinaryTree(treeNode));
+            System.out.println(solution.isBalanced(treeNode));
         }
     }
 
@@ -17,21 +17,13 @@ public class Main {
 
 
 class Solution {
-    int res;
-
-    public int diameterOfBinaryTree(TreeNode root) {
-        res = 1;
-        depth(root);
-        return res - 1;
+    public boolean isBalanced(TreeNode root) {
+        if (root == null) return true;
+        return Math.abs(height(root.left) - height(root.right)) <= 1 && isBalanced(root.left) && isBalanced(root.right);
     }
 
-    int depth(TreeNode root) {
-        if (root == null) {
-            return 0;
-        }
-        int L = depth(root.left);
-        int R = depth(root.right);
-        res = Math.max(res, L + R + 1);
-        return Math.max(L, R) + 1;
+    private int height(TreeNode root) {
+        if (root == null) return 0;
+        return Math.max(height(root.left), height(root.right)) + 1;
     }
 }
