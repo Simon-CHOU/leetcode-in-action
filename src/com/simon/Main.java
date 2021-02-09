@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             TreeNode treeNode = InputTreeUtil.inputBtree();
-            System.out.println(solution.isBalanced(treeNode));
+            System.out.println(solution.sumOfLeftLeaves(treeNode));
         }
     }
 
@@ -17,13 +17,25 @@ public class Main {
 
 
 class Solution {
-    public boolean isBalanced(TreeNode root) {
-        if (root == null) return true;
-        return Math.abs(height(root.left) - height(root.right)) <= 1 && isBalanced(root.left) && isBalanced(root.right);
+    public int sumOfLeftLeaves(TreeNode root) {
+        if (root == null) return 0;
+        return dfs(root);
     }
 
-    private int height(TreeNode root) {
-        if (root == null) return 0;
-        return Math.max(height(root.left), height(root.right)) + 1;
+    private int dfs(TreeNode root) {
+        int res = 0;
+        if (root.left != null) {
+            res += isLeafNode(root.left) ? root.left.val : dfs(root.left);
+        }
+        if (root.right != null && !isLeafNode(root.right)) {
+            res += dfs(root.right);
+        }
+        return res;
+    }
+
+    boolean isLeafNode(TreeNode root) {
+        return root.left == null && root.right == null;
     }
 }
+//[3,9,20,null,null,15,7]
+//24
