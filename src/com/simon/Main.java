@@ -10,42 +10,34 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            TreeNode treeNode = InputTreeUtil.inputBtree();
-            System.out.println(solution.sumOfLeftLeaves(treeNode));
+            TreeNode s = InputTreeUtil.inputBtree();
+            TreeNode t = InputTreeUtil.inputBtree();
+            System.out.println(solution.isSubtree(s, t));
         }
     }
 
 
 }
-
 
 class Solution {
-    public int sumOfLeftLeaves(TreeNode root) {
-        if (root == null) return 0;
-        int res = 0;
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        while (!queue.isEmpty()) {
-            TreeNode temp = queue.poll();
-            if (temp.left != null) {
-                if (isLeafNode(temp.left)) {
-                    res += temp.left.val;
-                } else {
-                    queue.offer(temp.left);
-                }
-            }
-            if (temp.right != null) {
-                if (!isLeafNode(temp.right)) {
-                    queue.offer(temp.right);
-                }
-            }
-        }
-        return res;
+    public boolean isSubtree(TreeNode s, TreeNode t) {
+        return dfs(s, t);
     }
 
-    boolean isLeafNode(TreeNode root) {
-        return root.left == null && root.right == null;
+    public boolean dfs(TreeNode s, TreeNode t) {
+        if (s == null) {
+            return false;
+        }
+        return check(s, t) || dfs(s.left, t) || dfs(s.right, t);
+    }
+
+    public boolean check(TreeNode s, TreeNode t) {
+        if (s == null && t == null) {
+            return true;
+        }
+        if (s == null || t == null || s.val != t.val) {
+            return false;
+        }
+        return check(s.left, t.left) && check(s.right, t.right);
     }
 }
-//[3,9,20,null,null,15,7]
-//24
