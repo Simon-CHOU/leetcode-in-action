@@ -2,8 +2,8 @@ package com.simon;
 
 import com.simon.util.*;
 
+import java.util.*;
 import java.util.LinkedList;
-import java.util.Queue;
 
 public class Main {
     private static Solution solution = new Solution();
@@ -11,8 +11,7 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             TreeNode s = InputTreeUtil.inputBtree();
-            TreeNode t = InputTreeUtil.inputBtree();
-            System.out.println(solution.isSubtree(s, t));
+            System.out.println(Arrays.toString(solution.findMode(s)));
         }
     }
 
@@ -20,24 +19,37 @@ public class Main {
 }
 
 class Solution {
-    public boolean isSubtree(TreeNode s, TreeNode t) {
-        return dfs(s, t);
+    List<Integer> answer = new ArrayList<Integer>();
+    int base, count, maxCount;
+
+    public int[] findMode(TreeNode root) {
+        dfs(root);
+        return answer.stream().mapToInt(i->i).toArray();
     }
 
-    public boolean dfs(TreeNode s, TreeNode t) {
-        if (s == null) {
-            return false;
+    public void dfs(TreeNode root) {
+        if (root == null) {
+            return;
         }
-        return check(s, t) || dfs(s.left, t) || dfs(s.right, t);
+        dfs(root.left);
+        update(root.val);
+        dfs(root.right);
     }
 
-    public boolean check(TreeNode s, TreeNode t) {
-        if (s == null && t == null) {
-            return true;
+    public void update(int x) {
+        if (x == base) {
+            count++;
+        } else {//x>base  非递减
+            base = x;
+            count = 1;
         }
-        if (s == null || t == null || s.val != t.val) {
-            return false;
+        if (count == maxCount) {
+            answer.add(x);
         }
-        return check(s.left, t.left) && check(s.right, t.right);
+        if (count > maxCount) {
+            maxCount = count;
+            answer.clear();
+            answer.add(x);
+        }
     }
 }
