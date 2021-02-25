@@ -22,9 +22,24 @@ class Solution {
         if (root == null) {
             return 0;
         }
-        int leftDepth = maxDepth(root.left);
-        int rightDepth = maxDepth(root.right);
-        return Math.max(leftDepth, rightDepth) + 1;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int ans = 0;
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            while (size > 0) { //把当前这一层全部过掉
+                TreeNode node = queue.poll();
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+                size--;
+            }
+            ans++;
+        }
+        return ans;
     }
 }
-
+//[3,9,20,null,null,15,7]
