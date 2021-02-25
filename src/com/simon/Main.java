@@ -12,7 +12,8 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             TreeNode s = InputTreeUtil.inputBtree();
-            System.out.println(solution.binaryTreePaths(s));
+            TreeNode t = InputTreeUtil.inputBtree();
+            System.out.println(solution.isSameTree(s, t));
         }
     }
 
@@ -20,31 +21,15 @@ public class Main {
 }
 
 class Solution {
-
-    public List<String> binaryTreePaths(TreeNode root) {
-        List<String> paths = new ArrayList<>();
-        if (root == null) {return paths;}
-        Queue<TreeNode> nodeQueue = new LinkedList<>();
-        Queue<String> pathQueue = new LinkedList<>();
-        nodeQueue.offer(root);
-        pathQueue.offer(String.valueOf(root.val));
-        while (!nodeQueue.isEmpty()) {
-            TreeNode node = nodeQueue.poll();
-            String path = pathQueue.poll();
-            if (node.left == null && node.right == null) {
-                paths.add(path);
-            } else {
-                if (node.left != null) {
-                    nodeQueue.offer(node.left);
-                    pathQueue.offer(new StringBuilder(path).append("->").append(node.left.val).toString());
-                }
-                if (node.right != null) {
-                    nodeQueue.offer(node.right);
-                    pathQueue.offer(new StringBuilder(path).append("->").append(node.right.val).toString());
-                }
-            }
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null && q == null) {
+            return true;
+        } else if (p == null || q == null) {
+            return false;
+        } else if (p.val != q.val) {
+            return false;
+        } else {
+            return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
         }
-        return paths;
     }
 }
-//[1,2,3,null,5]
