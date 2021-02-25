@@ -12,34 +12,26 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             TreeNode s = InputTreeUtil.inputBtree();
-            System.out.println(solution.maxDepth(s));
+            TreeNode t = InputTreeUtil.inputBtree();
+            System.out.println(solution.mergeTrees(s, t));
         }
     }
 }
 
 class Solution {
-    public int maxDepth(TreeNode root) {
-        if (root == null) {
-            return 0;
+    public TreeNode mergeTrees(TreeNode root1, TreeNode root2) {
+        if (root1 == null) {
+            return root2;
         }
-        Queue<TreeNode> queue = new LinkedList<>();
-        queue.offer(root);
-        int ans = 0;
-        while (!queue.isEmpty()) {
-            int size = queue.size();
-            while (size > 0) { //把当前这一层全部过掉
-                TreeNode node = queue.poll();
-                if (node.left != null) {
-                    queue.offer(node.left);
-                }
-                if (node.right != null) {
-                    queue.offer(node.right);
-                }
-                size--;
-            }
-            ans++;
+        if (root2 == null) {
+            return root1;
         }
-        return ans;
+        TreeNode merged = new TreeNode(root1.val + root2.val);
+        merged.left = mergeTrees(root1.left, root2.left);
+        merged.right = mergeTrees(root1.right, root2.right);
+        return merged;
     }
 }
-//[3,9,20,null,null,15,7]
+//输入
+//[1,3,2,5]
+//[2,1,3,null,4,null,7]
