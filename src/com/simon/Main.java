@@ -3,6 +3,7 @@ package com.simon;
 import com.simon.util.*;
 
 import java.util.*;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -19,35 +20,31 @@ public class Main {
 }
 
 class Solution {
-//    List<Integer> temp = new ArrayList<>();
 
     public List<String> binaryTreePaths(TreeNode root) {
-        List<String> path = new ArrayList<>();
-        constructPath(root, "", path);
-        return path;
-    }
-
-    void constructPath(TreeNode root, String path, List<String> paths) {
-        if (root == null) return;
-        StringBuilder pathSB = new StringBuilder(path);
-        pathSB.append(root.val);
-        if (root.left == null && root.right == null) {
-            paths.add(pathSB.toString());
-        } else {
-            pathSB.append("->");
-            constructPath(root.left, pathSB.toString(), paths);
-            constructPath(root.right, pathSB.toString(), paths);
+        List<String> paths = new ArrayList<>();
+        if (root == null) {return paths;}
+        Queue<TreeNode> nodeQueue = new LinkedList<>();
+        Queue<String> pathQueue = new LinkedList<>();
+        nodeQueue.offer(root);
+        pathQueue.offer(String.valueOf(root.val));
+        while (!nodeQueue.isEmpty()) {
+            TreeNode node = nodeQueue.poll();
+            String path = pathQueue.poll();
+            if (node.left == null && node.right == null) {
+                paths.add(path);
+            } else {
+                if (node.left != null) {
+                    nodeQueue.offer(node.left);
+                    pathQueue.offer(new StringBuilder(path).append("->").append(node.left.val).toString());
+                }
+                if (node.right != null) {
+                    nodeQueue.offer(node.right);
+                    pathQueue.offer(new StringBuilder(path).append("->").append(node.right.val).toString());
+                }
+            }
         }
+        return paths;
     }
-//    public void dfs(TreeNode root) {
-//        if (root == null) return;
-//        temp.add(root.val);
-//        if (root.left == null && root.right == null) {
-//            ans.add(temp.stream().map(Object::toString).collect(Collectors.joining("->")));
-//            temp.clear();//这样做会清楚掉保存到其他叶子结点共用的路径，temp 要带着一起递归
-//        }
-//        dfs(root.left);
-//        dfs(root.right);
-//    }
 }
 //[1,2,3,null,5]
