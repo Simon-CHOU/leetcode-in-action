@@ -3,7 +3,7 @@ package com.simon;
 import com.simon.util.*;
 
 import java.util.*;
-import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public class Main {
     private static Solution solution = new Solution();
@@ -11,7 +11,7 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             TreeNode s = InputTreeUtil.inputBtree();
-            System.out.println(Arrays.toString(solution.findMode(s)));
+            System.out.println(solution.binaryTreePaths(s));
         }
     }
 
@@ -19,50 +19,35 @@ public class Main {
 }
 
 class Solution {
-    List<Integer> answer = new ArrayList<Integer>();
-    int base, count, maxCount;
+//    List<Integer> temp = new ArrayList<>();
 
-    public int[] findMode(TreeNode root) {
-        TreeNode cur = root, pre = null;
-        while (cur != null) {
-            if (cur.left == null) {
-                update(cur.val);
-                cur = cur.right;
-                continue;
-            }
-            pre = cur.left;
-            while (pre.right != null && pre.right != cur) {
-                pre = pre.right;
-            }
-            if(pre.right==null){
-                pre.right = cur;
-                cur = cur.left;
-            }else{
-                pre.right = null;
-                update(cur.val);
-                cur = cur.right;
-            }
-        }
-        return answer.stream().mapToInt(i -> i).toArray();
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> path = new ArrayList<>();
+        constructPath(root, "", path);
+        return path;
     }
 
-
-    public void update(int x) {
-        if (x == base) {
-            count++;
-        } else {//x>base  非递减
-            base = x;
-            count = 1;
-        }
-        if (count == maxCount) {
-            answer.add(x);
-        }
-        if (count > maxCount) {
-            maxCount = count;
-            answer.clear();
-            answer.add(x);
+    void constructPath(TreeNode root, String path, List<String> paths) {
+        if (root == null) return;
+        StringBuilder pathSB = new StringBuilder(path);
+        pathSB.append(root.val);
+        if (root.left == null && root.right == null) {
+            paths.add(pathSB.toString());
+        } else {
+            pathSB.append("->");
+            constructPath(root.left, pathSB.toString(), paths);
+            constructPath(root.right, pathSB.toString(), paths);
         }
     }
+//    public void dfs(TreeNode root) {
+//        if (root == null) return;
+//        temp.add(root.val);
+//        if (root.left == null && root.right == null) {
+//            ans.add(temp.stream().map(Object::toString).collect(Collectors.joining("->")));
+//            temp.clear();//这样做会清楚掉保存到其他叶子结点共用的路径，temp 要带着一起递归
+//        }
+//        dfs(root.left);
+//        dfs(root.right);
+//    }
 }
-//[1,null,2,2]
-//[2]
+//[1,2,3,null,5]
