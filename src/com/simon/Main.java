@@ -14,61 +14,48 @@ public class Main {
         while (true) {
             TreeNode s = InputTreeUtil.inputBtree();
             TreeNode t = InputTreeUtil.inputBtree();
-//            System.out.println();
-            DisplayTreeUtil.levelOrderTraversal(solution.mergeTrees(s, t));
+            TreeNode q = InputTreeUtil.inputBtree();
+            DisplayTreeUtil.levelOrderTraversal(solution.lowestCommonAncestor(s, t, q));
         }
     }
 }
 
 class Solution {
-    public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
-        if (t1 == null) {
-            return t2;
-        }
-        if (t2 == null) {
-            return t1;
-        }
-        TreeNode merged = new TreeNode(t1.val + t2.val);
-        Queue<TreeNode> queue = new LinkedList<>();//合并后的树
-        Queue<TreeNode> queue1 = new LinkedList<>();
-        Queue<TreeNode> queue2 = new LinkedList<>();
-        queue.offer(merged);
-        queue1.offer(t1);
-        queue2.offer(t2);
-        while (!queue1.isEmpty() && !queue2.isEmpty()) {
-            TreeNode node = queue.poll(), node1 = queue1.poll(), node2 = queue2.poll();
-            TreeNode left1 = node1.left, right1 = node1.right, left2 = node2.left, right2 = node2.right;
-            if (left1 != null || left2 != null) {
-                if (left1 != null && left2 != null) {
-                    TreeNode left = new TreeNode(left1.val + left2.val);
-                    node.left = left;
-                    queue.offer(left);//各自遍历
-                    queue1.offer(left1);
-                    queue2.offer(left2);
-                } else if (left1 != null) {
-                    node.left = left1;
-                } else {//if(left2 != null){
-                    node.left = left2;
-                }
-            }
-            if (right1 != null || right2 != null) {
-                if (right1 != null && right2 != null) {
-                    TreeNode right = new TreeNode(right1.val + right2.val);
-                    node.right = right;
-                    queue.offer(right);//各自遍历
-                    queue1.offer(right1);
-                    queue2.offer(right2);
-                } else if (right1 != null) {
-                    node.right = right1;
-                } else {// if(right2 != null){
-                    node.right = right2;
-                }
-            }
+    List<TreeNode> path1 = new ArrayList<>();
+    List<TreeNode> path2 = new ArrayList<>();
 
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        dfs(root, p.val, path1);
+        dfs(root, q.val, path2);
+
+        Iterator<TreeNode> it1 = path1.iterator();
+        Iterator<TreeNode> it2 = path2.iterator();
+        TreeNode ans = root;
+        while (it1.hasNext()&&it2.hasNext()){
+            TreeNode val1 = it1.next();
+            TreeNode val2 = it2.next();
+            if(val1.val !=val2.val) {
+                break;
+            }
+            ans = val1;
         }
-        return merged;
+//        System.out.println(ans.val);
+        return ans;
+    }
+
+    void dfs(TreeNode node, int val, List<TreeNode> path) {
+        if (node == null) return;
+        if (node.val == val) {
+            path.add(node);
+            return;
+        }
+        if (node.val > val) {
+            path.add(node);
+            dfs(node.left, val, path);
+        }
+        if (node.val < val) {
+            path.add(node);
+            dfs(node.right, val,path);
+        }
     }
 }
-//输入
-//[1,3,2,5]
-//[2,1,3,null,4,null,7]
