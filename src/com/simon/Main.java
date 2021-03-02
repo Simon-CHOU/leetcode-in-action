@@ -3,6 +3,7 @@ package com.simon;
 import com.simon.util.*;
 
 import java.util.*;
+import java.util.LinkedList;
 
 public class Main {
     private static Solution solution = new Solution();
@@ -10,31 +11,41 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             TreeNode s = InputTreeUtil.inputBtree();
-            int k = InputUtil.inputInt();
-            System.out.println(solution.kthLargest(s, k));
+            System.out.println(solution.zigzagLevelOrder(s));
         }
     }
 }
 
 class Solution {
-    private int result;
-    private int countK;
-
-    public int kthLargest(TreeNode root, int k) {
-        this.countK = k;
-        dfs(root);
-        return result;
-    }
-
-    void dfs(TreeNode root) {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> ans = new ArrayList<>();
         if (root == null) {
-            return;
+            return ans;
         }
-        dfs(root.right);//倒序中序遍历，得到非递增序列
-        if (--this.countK == 0) {//第k大，可以直接数出来
-            this.result = root.val;
-            return;
+        Queue<TreeNode> nodeQueue = new LinkedList<>();
+        nodeQueue.offer(root);
+        boolean isOrderLeft = true;
+        while (!nodeQueue.isEmpty()) {
+            Deque<Integer> levelList = new LinkedList<>();//levelList+ fori  一层一层地遍历
+            int size = nodeQueue.size();
+            for (int i = 0; i < size; i++) {//这里size不能inline，否则fori循环出口会出错
+                TreeNode curNode = nodeQueue.poll();
+                if (isOrderLeft) {
+                    levelList.offerLast(curNode.val);//关键改造就在levelList的维护
+                } else {
+                    levelList.offerFirst(curNode.val);
+                }
+                if (curNode.left != null) {
+                    nodeQueue.offer(curNode.left);
+                }
+                if (curNode.right != null) {
+                    nodeQueue.offer(curNode.right);
+                }//nodeQueue 的操作与正常BFS完全一样
+            }
+            ans.add(new LinkedList<>(levelList));
+            isOrderLeft = !isOrderLeft;
         }
-        dfs(root.left);
+        return ans;
     }
 }
+//[3,9,20,null,null,15,7]
