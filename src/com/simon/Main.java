@@ -1,11 +1,8 @@
 package com.simon;
 
 import com.simon.util.*;
-import com.sun.source.tree.Tree;
 
 import java.util.*;
-import java.util.LinkedList;
-import java.util.stream.Collectors;
 
 public class Main {
     private static Solution solution = new Solution();
@@ -20,19 +17,24 @@ public class Main {
 }
 
 class Solution {
-    List<Integer> list = new ArrayList<>();
+    private int result;
+    private int countK;
 
     public int kthLargest(TreeNode root, int k) {
+        this.countK = k;
         dfs(root);
-        return list.get(list.size() -k);
+        return result;
     }
 
     void dfs(TreeNode root) {
         if (root == null) {
             return;
         }
+        dfs(root.right);//倒序中序遍历，得到非递增序列
+        if (--this.countK == 0) {//第k大，可以直接数出来
+            this.result = root.val;
+            return;
+        }
         dfs(root.left);
-        list.add(root.val);
-        dfs(root.right);
     }
 }
