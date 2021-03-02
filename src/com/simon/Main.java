@@ -13,26 +13,26 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             TreeNode s = InputTreeUtil.inputBtree();
-            TreeNode t = InputTreeUtil.inputBtree();
-            TreeNode q = InputTreeUtil.inputBtree();
-            System.out.println(solution.lowestCommonAncestor(s, t, q).val);
+            int k = InputUtil.inputInt();
+            System.out.println(solution.kthLargest(s, k));
         }
     }
 }
 
 class Solution {
-    //这两个节点放在一起遍历，我们就省去了存储路径需要的空间
-    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        TreeNode ancestor = root;
-        while (true){
-            if(p.val < ancestor.val&&q.val<ancestor.val){
-                ancestor = ancestor.left;
-            }else if(p.val>ancestor.val && q.val>ancestor.val){
-                ancestor = ancestor.right;
-            }else{
-                break;
-            }
+    List<Integer> list = new ArrayList<>();
+
+    public int kthLargest(TreeNode root, int k) {
+        dfs(root);
+        return list.get(list.size() -k);
+    }
+
+    void dfs(TreeNode root) {
+        if (root == null) {
+            return;
         }
-        return ancestor;
+        dfs(root.left);
+        list.add(root.val);
+        dfs(root.right);
     }
 }
