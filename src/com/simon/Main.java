@@ -21,41 +21,32 @@ public class Main {
 }
 
 class Solution {
-    List<TreeNode> path1 = new ArrayList<>();
-    List<TreeNode> path2 = new ArrayList<>();
-
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        dfs(root, p.val, path1);
-        dfs(root, q.val, path2);
-
-        Iterator<TreeNode> it1 = path1.iterator();
-        Iterator<TreeNode> it2 = path2.iterator();
-        TreeNode ans = root;
-        while (it1.hasNext()&&it2.hasNext()){
-            TreeNode val1 = it1.next();
-            TreeNode val2 = it2.next();
-            if(val1.val !=val2.val) {
+        List<TreeNode> path_p = getPath(root, p);
+        List<TreeNode> path_q = getPath(root, q);
+        TreeNode ancestor = null;
+        for (int i = 0; i < path_p.size() && i < path_q.size(); ++i) {
+            if (path_p.get(i) == path_q.get(i)) {
+                ancestor = path_p.get(i);
+            } else {
                 break;
             }
-            ans = val1;
         }
-//        System.out.println(ans.val);
-        return ans;
+        return ancestor;
     }
 
-    void dfs(TreeNode node, int val, List<TreeNode> path) {
-        if (node == null) return;
-        if (node.val == val) {
+    public List<TreeNode> getPath(TreeNode root, TreeNode target) {
+        List<TreeNode> path = new ArrayList<>();
+        TreeNode node = root;
+        while (node.val != target.val) { //二叉搜索树的特有的“遍历”方式
             path.add(node);
-            return;
+            if (target.val < node.val) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
         }
-        if (node.val > val) {
-            path.add(node);
-            dfs(node.left, val, path);
-        }
-        if (node.val < val) {
-            path.add(node);
-            dfs(node.right, val,path);
-        }
+        path.add(node);
+        return path;
     }
 }
