@@ -15,38 +15,24 @@ public class Main {
             TreeNode s = InputTreeUtil.inputBtree();
             TreeNode t = InputTreeUtil.inputBtree();
             TreeNode q = InputTreeUtil.inputBtree();
-            DisplayTreeUtil.levelOrderTraversal(solution.lowestCommonAncestor(s, t, q));
+            System.out.println(solution.lowestCommonAncestor(s, t, q).val);
         }
     }
 }
 
 class Solution {
+    //这两个节点放在一起遍历，我们就省去了存储路径需要的空间
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        List<TreeNode> path_p = getPath(root, p);
-        List<TreeNode> path_q = getPath(root, q);
-        TreeNode ancestor = null;
-        for (int i = 0; i < path_p.size() && i < path_q.size(); ++i) {
-            if (path_p.get(i) == path_q.get(i)) {
-                ancestor = path_p.get(i);
-            } else {
+        TreeNode ancestor = root;
+        while (true){
+            if(p.val < ancestor.val&&q.val<ancestor.val){
+                ancestor = ancestor.left;
+            }else if(p.val>ancestor.val && q.val>ancestor.val){
+                ancestor = ancestor.right;
+            }else{
                 break;
             }
         }
         return ancestor;
-    }
-
-    public List<TreeNode> getPath(TreeNode root, TreeNode target) {
-        List<TreeNode> path = new ArrayList<>();
-        TreeNode node = root;
-        while (node.val != target.val) { //二叉搜索树的特有的“遍历”方式
-            path.add(node);
-            if (target.val < node.val) {
-                node = node.left;
-            } else {
-                node = node.right;
-            }
-        }
-        path.add(node);
-        return path;
     }
 }
