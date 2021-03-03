@@ -25,8 +25,9 @@ class Solution {
 
     /**
      * DFS遍历本身与正常的DFS并无区别，改造在于带着level+List，维护要输出的答案
-     * @param node 当前结点
-     * @param ans 目标List
+     *
+     * @param node  当前结点
+     * @param ans   目标List
      * @param level 当前层数
      */
     void dfs(TreeNode node, List<List<Integer>> ans, int level) {
@@ -37,12 +38,15 @@ class Solution {
             List<Integer> newLevel = new LinkedList<>();
             ans.add(newLevel);
         }
-        List<Integer> list = ans.get(level);
+        Deque<Integer> list = new ArrayDeque<>(ans.get(level));
         if (level % 2 == 0) {//层数的奇偶，控制zigzag
-            list.add(node.val);//偶数层从做到右
+//            list.off(node.val);//偶数层从做到右
+            list.offerLast(node.val);
         } else {
-            list.add(0, node.val);//add(0,val)在首位插入，跟双端队列是一回事
+//            list.add(0, node.val);//add(0,val)在首位插入，跟双端队列是一回事
+            list.offerFirst(node.val);
         }
+        ans.set(level, new ArrayList<>(list));
         dfs(node.left, ans, level + 1);
         dfs(node.right, ans, level + 1);
 
