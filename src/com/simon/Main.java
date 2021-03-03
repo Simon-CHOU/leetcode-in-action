@@ -19,33 +19,33 @@ public class Main {
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         List<List<Integer>> ans = new ArrayList<>();
-        if (root == null) {
-            return ans;
-        }
-        Queue<TreeNode> nodeQueue = new LinkedList<>();
-        nodeQueue.offer(root);
-        boolean isOrderLeft = true;
-        while (!nodeQueue.isEmpty()) {
-            Deque<Integer> levelList = new LinkedList<>();//levelList+ fori  一层一层地遍历
-            int size = nodeQueue.size();
-            for (int i = 0; i < size; i++) {//这里size不能inline，否则fori循环出口会出错
-                TreeNode curNode = nodeQueue.poll();
-                if (isOrderLeft) {
-                    levelList.offerLast(curNode.val);//关键改造就在levelList的维护
-                } else {
-                    levelList.offerFirst(curNode.val);
-                }
-                if (curNode.left != null) {
-                    nodeQueue.offer(curNode.left);
-                }
-                if (curNode.right != null) {
-                    nodeQueue.offer(curNode.right);
-                }//nodeQueue 的操作与正常BFS完全一样
-            }
-            ans.add(new LinkedList<>(levelList));
-            isOrderLeft = !isOrderLeft;
-        }
+        dfs(root, ans, 0);
         return ans;
+    }
+
+    /**
+     * DFS遍历本身与正常的DFS并无区别，改造在于带着level+List，维护要输出的答案
+     * @param node 当前结点
+     * @param ans 目标List
+     * @param level 当前层数
+     */
+    void dfs(TreeNode node, List<List<Integer>> ans, int level) {
+        if (node == null) {
+            return;
+        }
+        if (ans.size() <= level) {//ans.size与层数对应，ans.size()<=level,即下一层and的List还未创建
+            List<Integer> newLevel = new LinkedList<>();
+            ans.add(newLevel);
+        }
+        List<Integer> list = ans.get(level);
+        if (level % 2 == 0) {//层数的奇偶，控制zigzag
+            list.add(node.val);//偶数层从做到右
+        } else {
+            list.add(0, node.val);//add(0,val)在首位插入，跟双端队列是一回事
+        }
+        dfs(node.left, ans, level + 1);
+        dfs(node.right, ans, level + 1);
+
     }
 }
 //[3,9,20,null,null,15,7]
