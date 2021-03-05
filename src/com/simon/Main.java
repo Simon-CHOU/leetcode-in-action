@@ -12,17 +12,15 @@ public class Main {
         while (true) {
 //            TreeNode s = InputTreeUtil.inputBtree();
             int s = InputUtil.inputInt();
-            DisplayArrayUtil.disp(solution.countBits(s));
+            System.out.println(solution.fib(s));
         }
     }
 }
 
 class Solution {
-    public int[] countBits(int num) {
-        int[] bits = new int[num + 1];
-        for (int i = 1; i <= num; i++) {
-            bits[i] = bits[i&(i-1)] +1;
-        }
-        return bits;
+    public int fib(int n) {
+        if(n==0)return 0 ;
+        if (n == 1 || n == 2) return 1;
+        return fib(n - 1) + fib(n - 2);
     }
 }
