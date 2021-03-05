@@ -18,9 +18,16 @@ public class Main {
 }
 
 class Solution {
+    private List<Integer> memo = new ArrayList<>(Arrays.asList(0, 1, 1));
+
     public int fib(int n) {
-        if(n==0)return 0 ;
-        if (n == 1 || n == 2) return 1;
-        return fib(n - 1) + fib(n - 2);
+        if (n == 0) return 0;
+        return helper(n);
+    }
+
+    private int helper(int n) {
+        if (n <= memo.size() - 1) return memo.get(n);
+        memo.add(n, helper(n - 1) + helper(n - 2));
+        return memo.get(n);
     }
 }
