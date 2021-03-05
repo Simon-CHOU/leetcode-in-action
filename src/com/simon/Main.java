@@ -20,18 +20,13 @@ public class Main {
 class Solution {
     public int[] countBits(int num) {
         int[] bits = new int[num + 1];
-        for (int i = 0; i <= num; i++) {
-            bits[i] = countOnes(i);
+        int highBit = 0;
+        for (int i = 1; i <= num; i++) {
+            if ((i & i - 1) == 0) {
+                highBit = i;
+            }
+            bits[i] = bits[i - highBit] + 1;
         }
         return bits;
-    }
-
-    public int countOnes(int x) {
-        int ones = 0;
-        while (x > 0) {
-            x &= (x - 1);//抹去最后一位1
-            ones++;//多少次抹干净，就有多少个1
-        }
-        return ones;
     }
 }
