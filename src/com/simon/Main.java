@@ -18,16 +18,17 @@ public class Main {
 }
 
 class Solution {
-    private List<Integer> memo = new ArrayList<>(Arrays.asList(0, 1, 1));
 
     public int fib(int n) {
         if (n == 0) return 0;
-        return helper(n);
+        if (n == 1 || n == 2) return 1;
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        dp[2] = 1;
+        for (int i = 3; i <= n; i++) {
+            dp[i] = dp[i - 1] + dp[i - 2];
+        }
+        return dp[n];
     }
 
-    private int helper(int n) {
-        if (n <= memo.size() - 1) return memo.get(n);
-        memo.add(n, helper(n - 1) + helper(n - 2));
-        return memo.get(n);
-    }
 }
