@@ -19,30 +19,19 @@ public class Main {
 }
 
 class Solution {
-    // HashMap<Integer, Integer> memo = new HashMap<>();//HashMap没有int数组块
-    int[] memo;// 带备忘录的递归
 
     public int coinChange(int[] coins, int amount) {
-        memo = new int[amount + 1];//第一位不用
-        return dp(amount, coins);
-    }
-
-    int dp(int n, final int[] coins) {
-        if (n < 0) return -1;
-        if (n == 0) return 0;
-        if (memo[n] != 0) {
-            return memo[n];
-        }
-        int res = Integer.MAX_VALUE;// res 不要带着一起递归
-        for (int coin : coins) {
-            int subProblem = dp(n - coin, coins);
-            if (subProblem == -1) {//子问题无解，则跳过
-                continue;
+        int[] dp = new int[amount + 1];
+        Arrays.fill(dp, amount + 1);
+        dp[0] = 0;
+        for (int i = 0; i < dp.length; i++) {
+            for (int coin : coins
+                 ) {
+                if(i-coin<0)continue;;
+                dp[i] = Math.min(dp[i], 1+dp[i-coin]);
             }
-            res = Math.min(res, 1 + subProblem);
         }
-        memo[n] = res != Integer.MAX_VALUE ? res : -1;
-        return memo[n];
+        return (dp[amount] == amount+1)?-1:dp[amount];
     }
 }
 /**
