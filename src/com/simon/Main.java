@@ -19,26 +19,35 @@ public class Main {
 }
 
 class Solution {
-
     public int coinChange(int[] coins, int amount) {
-        int[] dp = new int[amount + 1];
-        Arrays.fill(dp, amount + 1);
-        dp[0] = 0;
-        for (int i = 0; i < dp.length; i++) {
-            for (int coin : coins
-                 ) {
-                if(i-coin<0)continue;;
-                dp[i] = Math.min(dp[i], 1+dp[i-coin]);
-            }
+        // 自底向上的动态规划
+        if (coins.length == 0) {
+            return -1;
         }
-        return (dp[amount] == amount+1)?-1:dp[amount];
+
+        // memo[n]的值： 表示的凑成总金额为n所需的最少的硬币个数
+        int[] memo = new int[amount + 1];
+        memo[0] = 0;
+        for (int i = 1; i <= amount; i++) {
+            int min = Integer.MAX_VALUE;
+            for (int coin : coins) {
+                int rest = i - coin;
+                if (rest <0){
+                    continue;
+                }
+                if (memo[rest] < min) {
+                    min = memo[rest] + 1;
+                }
+            }
+            memo[i] = min;
+        }
+        return memo[amount] == Integer.MAX_VALUE ? -1 : memo[amount];
     }
 }
 /**
  * [1,2,5]
  * 11
  * exp:3
- * <p>
  * [186,419,83,408]
  * 6249
  * exp:20
