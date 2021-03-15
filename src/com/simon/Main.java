@@ -18,25 +18,19 @@ public class Main {
 
 class Solution {
     public int lengthOfLongestSubstring(String s) {
-        int res = 0;
-        int length = s.length();
-        for (int i = 0; i < length; i++) {
-            for (int j = i+1; j <= length; j++) {
-                String substring = s.substring(i, j);
-                if (isNoRepeat(substring)) {
-                    res = Math.max(res,substring.length());
-                }
+        Set<Character> occ = new HashSet<>();
+        int n = s.length();
+        int rk = -1, res = 0;
+        for (int i = 0; i < n; i++) {
+            if (i != 0) {
+                occ.remove(s.charAt(i - 1));
             }
+            while (rk + 1 < n && !occ.contains(s.charAt(rk + 1))) {
+                occ.add(s.charAt(rk + 1));
+                ++rk;
+            }
+            res = Math.max(res, rk - i + 1);
         }
         return res;
-    }
-
-    boolean isNoRepeat(String str) {
-        Set<String> set = new HashSet<>();
-        for (int i = 0; i < str.length(); i++) {
-            set.add(str.substring(i,i+1));
-        }
-        int length = str.length();
-        return set.size() == length;//相等说明无重复
     }
 }
