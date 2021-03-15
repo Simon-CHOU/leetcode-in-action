@@ -28,4 +28,16 @@ public class InputUtil {
         System.out.print("#Please Input:");
         return scanner.nextLine();
     }
+
+    public static ListNode inputLinkedList(){
+        int[] ints = inputIntArray();
+        ListNode head = new ListNode();
+        ListNode p  = head;
+        for (int i = 0; i < ints.length; i++) {
+            ListNode node = new ListNode(ints[i]);
+            p.next = node;
+            p = p.next;
+        }
+        return head.next;
+    }
 }
