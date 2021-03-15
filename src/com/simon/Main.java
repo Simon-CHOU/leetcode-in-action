@@ -10,38 +10,33 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            ListNode l1 = InputUtil.inputLinkedList();
-            ListNode l2 = InputUtil.inputLinkedList();
-            System.out.println(solution.addTwoNumbers(l1, l2));
+            String s = InputUtil.inputStr();
+            System.out.println(solution.lengthOfLongestSubstring(s));
         }
     }
 }
 
 class Solution {
-    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode head = null, tail = null;
-        int carry = 0;
-        while (l1 != null || l2 != null) {
-            int n1 = l1 != null ? l1.val : 0;
-            int n2 = l2 != null ? l2.val : 0;
-            int sum = n1 + n2 + carry;//由于是倒序，所以链表头结点是个位，直接开始加即可。
-            if (head == null) {//第一次相加
-                head = tail = new ListNode(sum % 10);
-            } else {
-                tail.next = new ListNode(sum % 10);
-                tail = tail.next;
-            }
-            carry = sum / 10;
-            if (l1 != null) {
-                l1 = l1.next;
-            }
-            if (l2 != null) {
-                l2 = l2.next;
+    public int lengthOfLongestSubstring(String s) {
+        int res = 0;
+        int length = s.length();
+        for (int i = 0; i < length; i++) {
+            for (int j = i+1; j <= length; j++) {
+                String substring = s.substring(i, j);
+                if (isNoRepeat(substring)) {
+                    res = Math.max(res,substring.length());
+                }
             }
         }
-        if (carry > 0) {
-            tail.next = new ListNode(carry);
+        return res;
+    }
+
+    boolean isNoRepeat(String str) {
+        Set<String> set = new HashSet<>();
+        for (int i = 0; i < str.length(); i++) {
+            set.add(str.substring(i,i+1));
         }
-        return head;
+        int length = str.length();
+        return set.size() == length;//相等说明无重复
     }
 }
