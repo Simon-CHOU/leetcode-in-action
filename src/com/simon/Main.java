@@ -6,39 +6,42 @@ import java.util.*;
 import java.util.LinkedList;
 
 public class Main {
-    private static Solution solution = new Solution();
+//    private static Solution solution = new Solution();
 
     public static void main(String[] args) {
         while (true) {
 //            TreeNode s = InputTreeUtil.inputBtree();
             int[] c = InputUtil.inputIntArray();
             int s = InputUtil.inputInt();
-            System.out.println(solution.coinChange(c, s));
+//            System.out.println(solution.coinChange(c, s));
         }
     }
 }
 
-class Solution {
-    public int coinChange(int[] coins, int amount) {
-        int max = amount + 1;
-        int[] dp = new int[max];
-        Arrays.fill(dp, max);
-        dp[0] = 0;
-        for (int i = 1; i <= amount; i++) {
-            for (int coin : coins) {
-                if (coin <= i) {
-                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
-                }
-            }
-        }
-        return dp[amount] > amount ? -1 : dp[amount];
+class LRUCache extends LinkedHashMap<Integer, Integer> {
+    private int capacity;
+
+    public LRUCache(int capacity) {
+        super(capacity, 0.75F, true);
+        this.capacity = capacity;
+    }
+
+    public int get(int key) {
+        return super.getOrDefault(key, -1);
+    }
+
+    public void put(int key, int value) {
+        super.put(key, value);
+    }
+
+    @Override
+    protected boolean removeEldestEntry(Map.Entry<Integer, Integer> eldest) {
+        return size() > capacity;
     }
 }
 /**
- * [1,2,5]
- * 11
- * exp:3
- * [186,419,83,408]
- * 6249
- * exp:20
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.get(key);
+ * obj.put(key,value);
  */
