@@ -12,7 +12,8 @@ public class Main {
         while (true) {
 //            String s = InputUtil.inputStr();
 //            System.out.println(solution.lengthOfLongestSubstring(s));
-            System.out.println(solution.lengthOfLongestSubstring("pwwkew"));
+//            System.out.println(solution.lengthOfLongestSubstring("pwwkew"));
+            System.out.println(solution.lengthOfLongestSubstring("abcabcbb"));
         }
     }
 }
@@ -37,18 +38,19 @@ class Solution {
 
     public int lengthOfLongestSubstring(String s) {
         if (s.length() == 0) return 0;
-        HashMap<Character, Integer> map = new HashMap<>();
-        int res = 0;
+        HashMap<Character, Integer> map = new HashMap<>();//key=字符，value=字符起始位置
+        int maxLen = 0;
         int left = 0;
         for (int i = 0; i < s.length(); i++) {
-            if (map.containsKey(s.charAt(i))) {
-                left = Math.max(left, map.get(s.charAt(i)) + 1);
+            char curChar = s.charAt(i);//当前字符
+            if (map.containsKey(curChar)) {//遇到重复字符
+                 left = Math.max(left, map.get(curChar) + 1);//左边界右移到重复字符出现的右边一位
             }
-            map.put(s.charAt(i), i);
-            int b = i - left + 1;
-            res = Math.max(res, b);
+            map.put(curChar, i);
+            int len = i - left + 1;//当前子串的长度
+            maxLen = Math.max(maxLen, len);
         }
-        return res;
+        return maxLen;
     }
 
 //public int lengthOfLongestSubstring(String s) {
