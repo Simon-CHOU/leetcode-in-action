@@ -28,12 +28,7 @@ class Solution {
 //            char alpha = s.charAt(end);
 //            if (map.containsKey(alpha)) {
 //                start = Math.max(map.get(alpha), start);
-//            }
-//            ans = Math.max(ans, end - start + 1);
-//            map.put(s.charAt(end), end + 1);
-//        }
-//        return ans;
-//    }
+//            } ans = Math.max(ans, end - start + 1); map.put(s.charAt(end), end + 1); } return ans; }
 
 
     public int lengthOfLongestSubstring(String s) {
@@ -44,7 +39,7 @@ class Solution {
         for (int i = 0; i < s.length(); i++) {
             char curChar = s.charAt(i);//当前字符
             if (map.containsKey(curChar)) {//遇到重复字符
-                 left = Math.max(left, map.get(curChar) + 1);//左边界右移到重复字符出现的右边一位
+                 left = Math.max(left, map.get(curChar) + 1);//左边界【右移一位】或【到重复字符出现的右边一位】
             }
             map.put(curChar, i);
             int len = i - left + 1;//当前子串的长度
