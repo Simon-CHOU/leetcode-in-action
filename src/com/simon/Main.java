@@ -10,69 +10,64 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-//            String s = InputUtil.inputStr();
-//            System.out.println(solution.lengthOfLongestSubstring(s));
-//            System.out.println(solution.lengthOfLongestSubstring("pwwkew"));
-            System.out.println(solution.lengthOfLongestSubstring("abcabcbb"));
+
+            String s = InputUtil.inputStr().trim();
+            String substring = s.substring(2, s.length() - 2);
+            String[] split = substring.split("],\\[");
+            int[][] events = new int[split.length][2];
+            for (int i = 0; i < split.length; i++) {
+                String[] split1 = split[i].split(",");
+                for (int j = 0; j < split1.length; j++) {
+                    events[i][j] = Integer.parseInt(split1[j]);
+                }
+            }
+            System.out.println(solution.maxEvents(events));
         }
     }
 }
 
 class Solution {
 
-
-//    public int lengthOfLongestSubstring(String s) {
-//        int n = s.length(), ans = 0;
-//        Map<Character, Integer> map = new HashMap<>();
-//        for (int end = 0, start = 0; end < n; end++) {
-//            char alpha = s.charAt(end);
-//            if (map.containsKey(alpha)) {
-//                start = Math.max(map.get(alpha), start);
-//            }
-//            ans = Math.max(ans, end - start + 1);
-//            map.put(s.charAt(end), end + 1);
-//        }
-//        return ans;
-//    }
-
-
-    public int lengthOfLongestSubstring(String s) {
-        if (s.length() == 0) return 0;
-        HashMap<Character, Integer> map = new HashMap<>();//key=字符，value=字符起始位置
-        int maxLen = 0;
-        int left = 0;
-        for (int i = 0; i < s.length(); i++) {
-            char curChar = s.charAt(i);//当前字符
-            if (map.containsKey(curChar)) {//遇到重复字符
-                 left = Math.max(left, map.get(curChar) + 1);//左边界右移到重复字符出现的右边一位
+    public int maxEvents(int[][] events) {
+        Arrays.sort(events, (o1, o2) -> o1[0] - o2[0]);
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        int res = 0, lastDay = 1, i = 0, n = events.length;
+        while (i < n || !pq.isEmpty()) {
+            while (i < n) {
+                int start = events[i][0];
+                if (start != lastDay) break;
+                int end = events[i][1];
+                i++;
+                pq.offer(end);
             }
-            map.put(curChar, i);
-            int len = i - left + 1;//当前子串的长度
-            maxLen = Math.max(maxLen, len);
+//            while (i < n && events[i][0] == lastDay) {
+//                pq.offer(events[i++][1]);
+//            }
+            while (!pq.isEmpty() && pq.peek() < lastDay) {
+                pq.poll();
+            }
+            if (!pq.isEmpty()) {
+                pq.poll();
+                res++;
+            }
+            lastDay++;
         }
-        return maxLen;
+        return res;
     }
-
-//public int lengthOfLongestSubstring(String s) {
-//    // 哈希集合，记录每个字符是否出现过
-//    Set<Character> occ = new HashSet<Character>();
-//    int n = s.length();
-//    // 右指针，初始值为 -1，相当于我们在字符串的左边界的左侧，还没有开始移动
-//    int rk = -1, ans = 0;
-//    for (int i = 0; i < n; ++i) {
-//        if (i != 0) {
-//            // 左指针向右移动一格，移除一个字符
-//            occ.remove(s.charAt(i - 1));
+    //TIMEOUT
+//    public int maxEvents(int[][] events) {
+//        Arrays.sort(events, (o1, o2) -> o1[1] - o2[1]);
+//        Set<Integer> set = new HashSet<>();
+//        for (int[] event : events) {
+//            int s = event[0];
+//            int e = event[1];
+//            for (int i = s; i <=e; i++) {
+//                if (!set.contains(i)) {
+//                    set.add(i);
+//                    break;
+//                }
+//            }
 //        }
-//        while (rk + 1 < n &&
-//                !occ.contains(s.charAt(rk + 1))) {
-//            // 不断地移动右指针
-//            occ.add(s.charAt(rk + 1));
-//            ++rk;
-//        }
-//        // 第 i 到 rk 个字符是一个极长的无重复字符子串
-//        ans = Math.max(ans, rk - i + 1);
+//        return set.size();
 //    }
-//    return ans;
-//}
 }
