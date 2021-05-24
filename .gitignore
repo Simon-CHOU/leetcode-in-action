@@ -252,3 +252,4 @@ hs_err_pid*
 target/
 
 # End of https://www.toptal.com/developers/gitignore/api/java,java-web,code-java,intellij,intellij+all,intellij+iml
+.idea/misc.xml
