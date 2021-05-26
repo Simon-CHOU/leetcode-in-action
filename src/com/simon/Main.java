@@ -10,40 +10,69 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            int[] a = InputUtil.inputIntArray();
-            System.out.println(solution.maxProfit(a));
+            int[] nums = InputUtil.inputIntArray();
+            int k = InputUtil.inputInt();
+            solution.rotate(nums, k);
         }
     }
 }
 
 class Solution {
-    public int maxProfit(int[] prices) {
-        int n = prices.length;
-        int dp0 = 0, dp1 = -prices[0];
-        for (int i = 1; i < n; i++) {
-            // dp0 当天结束不持有（昨天就卖了or卖了昨天的）
-            int newDp0 = Math.max(dp0, dp1 + prices[i]);//max(昨天就没有今天也不买,今天卖出)
-            // dp1 当天结束持有（昨天就买了or今天刚买）
-            int newDp1 = Math.max(dp1, dp0 - prices[i]);//max(昨天就持有今天不动，今天买入)
-            dp0 = newDp0;
-            dp1 = newDp1;
-        }
-        return dp0;
+    public void rotate(int[] nums, int k) {
+        int len = nums.length;
+        k = k % len;
+        reverseArr(nums, 0, len-1);
+        reverseArr(nums, 0, k - 1);
+        reverseArr(nums, k, len - 1);
     }
+
     /**
-     *  public int maxProfit(int[] prices) {
-     *         int n = prices.length;
-     *         int[][] dp = new int[n][2];
-     *         dp[0][0] = 0;
-     *         dp[0][1] = -prices[0];
-     *         int maxProfit = 0;
-     *         for (int i = 1; i < n; i++) {
-     *             // [x][0] 当天结束不持有（昨天就卖了or卖了昨天的）
-     *             dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + prices[i]);//max(昨天就没有今天也不买,今天卖出)
-     *             // [x][1] 当天结束持有（昨天就买了or今天刚买）
-     *             dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - prices[i]);//max(昨天就持有今天不动，今天买入)
+     * reverse arr[start]~arr[end], includ  arr[start] & arr[end]
+     *
+     * @param arr   array
+     * @param start begin
+     * @param end   end
+     */
+    private void reverseArr(int[] arr, int start, int end) {
+        while(start<end){
+            int temp = arr[start];
+            arr[start] = arr[end];
+            arr[end] = temp;
+            start++;
+            end--;
+        }
+//        int len = end - start + 1;
+//        int mid = start + (len / 2) -1;
+//        for (int i = start; i < mid; i++) {
+//            int temp = arr[i];
+//            arr[i] = arr[len - 1 - i];
+//            arr[len - 1 - i] = temp;
+//        }
+    }
+    /** arrycopy 简化
+     *     public void rotate(int[] nums, int k) {
+     *         int len = nums.length;
+     *         int[] ans = new int[len];
+     *         for (int i = 0; i < len; i++) {
+     *             ans[(i + k) % len] = nums[i];
      *         }
-     *         return dp[n - 1][0];
+     *         System.arraycopy(ans,0,nums,0, len);
+     * //        for (int i = 0; i < len; i++) {
+     * //            nums[i] = ans[i];
+     * //        }
+     *
+     *     }
+     */
+    /** 自解
+     *     public void rotate(int[] nums, int k) {
+     *         int len = nums.length;
+     *         int[] ans = new int[len];
+     *         for (int i = 0; i < len; i++) {
+     *             ans[(i + k) % len] = nums[i];
+     *         }
+     *         for (int i = 0; i < len; i++) {
+     *             nums[i] = ans[i];
+     *         }
      *     }
      */
 }
