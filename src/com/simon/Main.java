@@ -13,34 +13,27 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             int[] nums = InputUtil.inputIntArray();
-            int[] nums1 = InputUtil.inputIntArray();
-            DisplayArrayUtil.disp(solution.intersect(nums, nums1));
+            DisplayArrayUtil.disp(solution.plusOne(nums));
         }
     }
 }
 
 class Solution {
-    public int[] intersect(int[] nums1, int[] nums2) {
-        Arrays.sort(nums1);
-        Arrays.sort(nums2);
-        int len1 = nums1.length;
-        int len2 = nums2.length;
-        int[] intersection = new int[Math.min(len1, len2)];
-        int p1 = 0, p2 = 0, p = 0;
-        while (p1 < len1 && p2 < len2) {
-            if (nums1[p1] < nums2[p2]) {
-                p1++;
-            } else if (nums1[p1] > nums2[p2]) {
-                p2++;
-            } else {
-                //nums1[p1]==nums2[p2]
-                intersection[p++] = nums1[p1];
-                p1++;
-                p2++;
-            }
+    /**
+     * 关键：只加1.
+     *
+     * @param digits
+     * @return
+     */
+    public int[] plusOne(int[] digits) {
+        int len = digits.length;
+        for (int i = len - 1; i >= 0; i--) {
+            digits[i]++;
+            digits[i] = digits[i] % 10;//除了9 加1进位(且原位为0），其他都不进位
+            if (digits[i] != 0) return digits;
         }
-
-
-        return Arrays.copyOfRange(intersection, 0, p);
+        digits = new int[len + 1];//处理99,999..等特殊情况，进位1，且其余都是0
+        digits[0] = 1;
+        return digits;
     }
 }
