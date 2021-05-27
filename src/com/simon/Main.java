@@ -4,6 +4,8 @@ import com.simon.util.*;
 
 import java.util.*;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Main {
     private static Solution solution = new Solution();
@@ -11,98 +13,34 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             int[] nums = InputUtil.inputIntArray();
-            System.out.println(solution.singleNumber(nums));
+            int[] nums1 = InputUtil.inputIntArray();
+            DisplayArrayUtil.disp(solution.intersect(nums, nums1));
         }
     }
 }
 
 class Solution {
-    public int singleNumber(int[] nums) {
-        int single = 0;
-        for (int num : nums) {
-            single ^= num;
+    public int[] intersect(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        int len1 = nums1.length;
+        int len2 = nums2.length;
+        int[] intersection = new int[Math.min(len1, len2)];
+        int p1 = 0, p2 = 0, p = 0;
+        while (p1 < len1 && p2 < len2) {
+            if (nums1[p1] < nums2[p2]) {
+                p1++;
+            } else if (nums1[p1] > nums2[p2]) {
+                p2++;
+            } else {
+                //nums1[p1]==nums2[p2]
+                intersection[p++] = nums1[p1];
+                p1++;
+                p2++;
+            }
         }
-        return single;
+
+
+        return Arrays.copyOfRange(intersection, 0, p);
     }
-    /**
-     * FAIL 不支持负数 [1,3,1,-1,3]
-     *     public int singleNumber(int[] nums) {
-     *         Map<Integer, Integer> map = new HashMap<>();
-     *         for (int i = 0; i < nums.length; i++) {
-     *             int sum = sumSkip(nums, i);
-     *             if (sum % 2 == 0) { //去除nums[i]后，nums和被2整除，说明nums[i]就是单独的数字
-     *                 return nums[i];
-     *             }
-     *         }
-     *         return -1;
-     *     }
-     *
-     *     int sumSkip(int[] num, int indexToSkip) {
-     *         int sum = 0;
-     *         for (int i = 0; i < num.length; i++) {
-     *             if (i == indexToSkip) continue;
-     *             sum += num[i];
-     *         }
-     *         return sum;
-     *     }
-     */
-
-
-    /**
-     * HashMap
-     *     public int singleNumber(int[] nums) {
-     *         Map<Integer, Integer> map = new HashMap<>();
-     *         for (int num : nums) {
-     *             if (map.get(num) != null) {
-     *                 int count = map.get(num);
-     *                 count++;
-     *                 map.put(num, count);
-     *             } else {
-     *                 map.put(num, 1);
-     *             }
-     *         }
-     *         for (Map.Entry<Integer, Integer> next : map.entrySet()) {
-     *             if (next.getValue() == 1) {
-     *                 return next.getKey();
-     *             }
-     *         }
-     *         return -1;
-     *     }
-     *     public int singleNumber(int[] nums) {
-     *         Map<Integer, Integer> map = new HashMap<>();
-     *         for (int i = 0; i < nums.length; i++) {
-     *             if (map.get(nums[i]) != null) {
-     *                 int count = map.get(nums[i]);
-     *                 ;
-     *                 count++;
-     *                 map.put(nums[i], count);
-     *             } else {
-     *                 map.put(nums[i], 1);
-     *             }
-     *         }
-     *         Iterator<Map.Entry<Integer, Integer>> iterator = map.entrySet().iterator();
-     *         while (iterator.hasNext()) {
-     *             Map.Entry<Integer, Integer> next = iterator.next();
-     *             if (next.getValue() == 1) {
-     *                 return next.getKey();
-     *             }
-     *         }
-     *         return -1;
-     *     }
-     */
-
-    /** HashSet
-     *     public int singleNumber(int[] nums) {
-     *         Set<Integer> set = new HashSet<>();
-     *         for (int i = 0; i < nums.length; i++) {
-     *             if (set.contains(nums[i])) {
-     *                 set.remove(nums[i]);
-     *             } else {
-     *                 set.add(nums[i]);
-     *             }
-     *         }
-     *         Iterator<Integer> iterator = set.iterator();
-     *         return iterator.next();
-     *     }
-     */
 }
