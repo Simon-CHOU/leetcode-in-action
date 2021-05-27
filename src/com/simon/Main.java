@@ -12,30 +12,22 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-//            int[] nums = InputUtil.inputIntArray();
-            int[] nums = {0,1,0,3,12};
-//            int[] nums = new int[]{0,1,0,3,12};
-            solution.moveZeroes(nums);
-            DisplayArrayUtil.disp(nums);
+            int[] nums = InputUtil.inputIntArray();
+            int k = InputUtil.inputInt();
+            DisplayArrayUtil.disp(solution.twoSum(nums, k));
         }
     }
 }
 
 class Solution {
-    public void moveZeroes(int[] nums) {
-        int l = 0, r = 0;
-        while (r < nums.length) {
-            if (nums[r] != 0) {
-                swap(nums, l, r);
-                l++;
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if (map.get(target - nums[i]) != null) {
+                return new int[]{map.get(target - nums[i]), i};
             }
-            r++;
+            map.put(nums[i], i);
         }
-    }
-
-    private void swap(int[] nums, int l, int r) {
-        int t = nums[l];
-        nums[l] = nums[r];
-        nums[r] = t;
+        return new int[]{};
     }
 }
