@@ -10,39 +10,157 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            int[] nums = InputUtil.inputIntArray();
-            int[] nums1 = InputUtil.inputIntArray();
-            DisplayArrayUtil.disp(solution.intersect(nums, nums1));
+            char[][] nums = InputUtil.matrixC2D(9, 9);
+            System.out.println(solution.isValidSudoku(nums));
         }
     }
 }
 
 class Solution {
-    public int[] intersect(int[] nums1, int[] nums2) {
-        //nums1 short, nums2 long
-        if (nums1.length > nums2.length) {
-            return intersect(nums2, nums1);// bravo~
-        }
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int n : nums1) {
-            int count = map.getOrDefault(n, 0) + 1;
-            map.put(n, count);
-        }
-        int[] intersection = new int[nums1.length];
-        int index = 0;
-        for (int num : nums2) {
-            int count = map.getOrDefault(num, 0);
-            if (count > 0) {
-                intersection[index++] = num;
-                count--;
-                if (count > 0) {
-                    map.put(num, count);//refresh count vlaue
+    public boolean isValidSudoku(char[][] board) {
+        //数字 1-9 在每一行只能出现一次。
+        for (int i = 0; i < 9; i++) {
+            Map<Character, Integer> map = new HashMap<>();
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.') continue;
+                if (map.get(board[i][j]) != null) {
+                    return false;
                 } else {
-                    map.remove(num);
+                    map.put(board[i][j], 1);
                 }
             }
         }
-        return Arrays.copyOfRange(intersection, 0, index);
+        //数字 1-9 在每一列只能出现一次。
+        for (int j = 0; j < 9; j++) {
+            Map<Character, Integer> map = new HashMap<>();
+            for (int i = 0; i < 9; i++) {
+                if (board[i][j] == '.') continue;
+                if (map.get(board[i][j]) != null) {
+                    return false;
+                } else {
+                    map.put(board[i][j], 1);
+                }
+            }
+        }
+        //数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。
+        //row1
+        Map<Character, Integer> map = new HashMap<>();
+        for (int j = 0; j < 3; j++) {
+            for (int i = 0; i < 3; i++) {
+                if (board[i][j] == '.') continue;
+                if (map.get(board[i][j]) != null) {
+                    return false;
+                } else {
+                    map.put(board[i][j], 1);
+                }
+            }
+        }
+        map.clear();
+        for (int j = 3; j < 6; j++) {
+            for (int i = 0; i < 3; i++) {
+                if (board[i][j] == '.') continue;
+                if (map.get(board[i][j]) != null) {
+                    return false;
+                } else {
+                    map.put(board[i][j], 1);
+                }
+            }
+        }
+        map.clear();
+        for (int j = 6; j < 9; j++) {
+            for (int i = 0; i < 3; i++) {
+                if (board[i][j] == '.') continue;
+                if (map.get(board[i][j]) != null) {
+                    return false;
+                } else {
+                    map.put(board[i][j], 1);
+                }
+            }
+        }
+//row 2
+        map.clear();
+        for (int j = 0; j < 3; j++) {
+            for (int i = 3; i < 6; i++) {
+                if (board[i][j] == '.') continue;
+                if (map.get(board[i][j]) != null) {
+                    return false;
+                } else {
+                    map.put(board[i][j], 1);
+                }
+            }
+        }
+        map.clear();
+        for (int j = 3; j < 6; j++) {
+            for (int i = 3; i < 6; i++) {
+                if (board[i][j] == '.') continue;
+                if (map.get(board[i][j]) != null) {
+                    return false;
+                } else {
+                    map.put(board[i][j], 1);
+                }
+            }
+        }
+        map.clear();
+        for (int j = 6; j < 9; j++) {
+            for (int i = 3; i < 6; i++) {
+                if (board[i][j] == '.') continue;
+                if (map.get(board[i][j]) != null) {
+                    return false;
+                } else {
+                    map.put(board[i][j], 1);
+                }
+            }
+        }
+        // row 3
+        map.clear();
+        for (int j = 0; j < 3; j++) {
+            for (int i = 6; i < 9; i++) {
+                if (board[i][j] == '.') continue;
+                if (map.get(board[i][j]) != null) {
+                    return false;
+                } else {
+                    map.put(board[i][j], 1);
+                }
+            }
+        }
+        map.clear();
+        for (int j = 3; j < 6; j++) {
+            for (int i = 6; i < 9; i++) {
+                if (board[i][j] == '.') continue;
+                if (map.get(board[i][j]) != null) {
+                    return false;
+                } else {
+                    map.put(board[i][j], 1);
+                }
+            }
+        }
+        map.clear();
+        for (int j = 6; j < 9; j++) {
+            for (int i = 6; i < 9; i++) {
+                if (board[i][j] == '.') continue;
+                if (map.get(board[i][j]) != null) {
+                    return false;
+                } else {
+                    map.put(board[i][j], 1);
+                }
+            }
+        }
+        return true;
     }
-
 }
+
+/**
+[["5","3",".",".","7",".",".",".","."]
+,["6",".",".","1","9","5",".",".","."]
+,[".","9","8",".",".",".",".","6","."]
+,["8",".",".",".","6",".",".",".","3"]
+,["4",".",".","8",".","3",".",".","1"]
+,["7",".",".",".","2",".",".",".","6"]
+,[".","6",".",".",".",".","2","8","."]
+,[".",".",".","4","1","9",".",".","5"]
+,[".",".",".",".","8",".",".","7","9"]]
+<p>
+来源：力扣（LeetCode）
+链接：https://leetcode-cn.com/problems/valid-sudoku
+著作权归领扣网络所有。商业转载请联系官方授权，非商业转载请注明出处。
+ */
