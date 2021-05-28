@@ -43,105 +43,19 @@ class Solution {
             }
         }
         //数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。
-        //row1
         Map<Character, Integer> map = new HashMap<>();
-        for (int j = 0; j < 3; j++) {
-            for (int i = 0; i < 3; i++) {
-                if (board[i][j] == '.') continue;
-                if (map.get(board[i][j]) != null) {
-                    return false;
-                } else {
-                    map.put(board[i][j], 1);
-                }
-            }
-        }
-        map.clear();
-        for (int j = 3; j < 6; j++) {
-            for (int i = 0; i < 3; i++) {
-                if (board[i][j] == '.') continue;
-                if (map.get(board[i][j]) != null) {
-                    return false;
-                } else {
-                    map.put(board[i][j], 1);
-                }
-            }
-        }
-        map.clear();
-        for (int j = 6; j < 9; j++) {
-            for (int i = 0; i < 3; i++) {
-                if (board[i][j] == '.') continue;
-                if (map.get(board[i][j]) != null) {
-                    return false;
-                } else {
-                    map.put(board[i][j], 1);
-                }
-            }
-        }
-//row 2
-        map.clear();
-        for (int j = 0; j < 3; j++) {
-            for (int i = 3; i < 6; i++) {
-                if (board[i][j] == '.') continue;
-                if (map.get(board[i][j]) != null) {
-                    return false;
-                } else {
-                    map.put(board[i][j], 1);
-                }
-            }
-        }
-        map.clear();
-        for (int j = 3; j < 6; j++) {
-            for (int i = 3; i < 6; i++) {
-                if (board[i][j] == '.') continue;
-                if (map.get(board[i][j]) != null) {
-                    return false;
-                } else {
-                    map.put(board[i][j], 1);
-                }
-            }
-        }
-        map.clear();
-        for (int j = 6; j < 9; j++) {
-            for (int i = 3; i < 6; i++) {
-                if (board[i][j] == '.') continue;
-                if (map.get(board[i][j]) != null) {
-                    return false;
-                } else {
-                    map.put(board[i][j], 1);
-                }
-            }
-        }
-        // row 3
-        map.clear();
-        for (int j = 0; j < 3; j++) {
-            for (int i = 6; i < 9; i++) {
-                if (board[i][j] == '.') continue;
-                if (map.get(board[i][j]) != null) {
-                    return false;
-                } else {
-                    map.put(board[i][j], 1);
-                }
-            }
-        }
-        map.clear();
-        for (int j = 3; j < 6; j++) {
-            for (int i = 6; i < 9; i++) {
-                if (board[i][j] == '.') continue;
-                if (map.get(board[i][j]) != null) {
-                    return false;
-                } else {
-                    map.put(board[i][j], 1);
-                }
-            }
-        }
-        map.clear();
-        for (int j = 6; j < 9; j++) {
-            for (int i = 6; i < 9; i++) {
-                if (board[i][j] == '.') continue;
-                if (map.get(board[i][j]) != null) {
-                    return false;
-                } else {
-                    map.put(board[i][j], 1);
+        for (int p = 0; p <= 6; p+=3) {
+            for (int q = 0; q <= 6; q+=3) {
+                map.clear();
+                for (int j = p; j < p+3; j++) {
+                    for (int i = q; i < q+3; i++) {
+                        if (board[i][j] == '.') continue;
+                        if (map.get(board[i][j]) != null) {
+                            return false;
+                        } else {
+                            map.put(board[i][j], 1);
+                        }
+                    }
                 }
             }
         }
