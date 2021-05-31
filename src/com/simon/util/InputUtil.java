@@ -44,11 +44,11 @@ public class InputUtil {
         return head.next;
     }
 
-    public static int[][] matrix2D() {
+    public static int[][] matrix2D(int column) {
         String s = InputUtil.inputStr().trim();
         String substring = s.substring(2, s.length() - 2);
         String[] split = substring.split("],\\[");
-        int[][] events = new int[split.length][2];
+        int[][] events = new int[split.length][column];
         for (int i = 0; i < split.length; i++) {
             String[] split1 = split[i].split(",");
             for (int j = 0; j < split1.length; j++) {
