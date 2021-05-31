@@ -32,6 +32,17 @@ public class InputUtil {
         return scanner.nextLine();
     }
 
+    public static char[] inputCharArr() {
+        // e.g. ["H","a","n","n","a","h"]
+        String s = inputStr();
+        String[] split = s.substring(2, s.length() - 2).split("\",\"");
+        char[] a = new char[split.length];
+        for (int i = 0; i < split.length; i++) {
+            a[i] = split[i].charAt(0);
+        }
+        return a;
+    }
+
     public static ListNode inputLinkedList() {
         int[] ints = inputIntArray();
         ListNode head = new ListNode();

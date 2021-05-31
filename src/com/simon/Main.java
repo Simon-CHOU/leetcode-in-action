@@ -10,28 +10,19 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            int[][] nums = InputUtil.matrix2D(3);
-            solution.rotate(nums);
+            char[] arr = InputUtil.inputCharArr();
+            solution.reverseString(arr);
         }
     }
 }
 
 class Solution {
-    public void rotate(int[][] matrix) {
-        int len = matrix.length;
-        for (int i = 0; i < len / 2; i++) {
-            for (int j = 0; j < len; j++) {
-                int temp = matrix[i][j];
-                matrix[i][j] = matrix[len - 1 - i][j];
-                matrix[len - 1 - i][j] = temp;
-            }
+    public void reverseString(char[] s) {
+        for (int i = 0; i < s.length / 2; i++) {
+            char temp = s[i];
+            s[i] = s[s.length - 1 - i];
+            s[s.length - 1 - i] = temp;
         }
-        for (int i = 0; i < len; i++) {
-            for (int j = 0; j < i; j++) {// j<i
-                int temp = matrix[j][i];
-                matrix[j][i] = matrix[i][j];
-                matrix[i][j] = temp;
-            }
-        }
+//        System.out.println(s);
     }
 }
