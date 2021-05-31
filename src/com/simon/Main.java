@@ -11,23 +11,25 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            int i = InputUtil.inputInt();
-            System.out.println(solution.reverse(i));
+            String s = InputUtil.inputStr();
+            System.out.println(solution.firstUniqChar(s));
         }
     }
 }
 
 class Solution {
-    public int reverse(int x) {
-        int rev = 0;
-        while (x != 0) {
-            if (rev < Integer.MIN_VALUE / 10 || rev > Integer.MAX_VALUE / 10) {
-                return 0;
-            }
-            int digit = x % 10;
-            x /= 10;
-            rev = rev * 10 + digit;
+    public int firstUniqChar(String s) {
+        Map<Character, Integer> map = new HashMap<>();
+        for (int i = 0; i < s.length(); i++) {
+            char ch = s.charAt(i);
+            map.put(ch, map.getOrDefault(ch, 0) + 1);
         }
-        return rev;
+        for (int i = 0; i < s.length(); i++) {
+            Integer count = map.get(s.charAt(i));
+            if (count == 1) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
