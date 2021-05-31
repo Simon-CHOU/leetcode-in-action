@@ -18,11 +18,17 @@ public class Main {
 
 class Solution {
     public void reverseString(char[] s) {
-        for (int i = 0; i < s.length / 2; i++) {
-            char temp = s[i];
-            s[i] = s[s.length - 1 - i];
-            s[s.length - 1 - i] = temp;
+        int length = s.length;
+        for (int left = 0, right = length - 1 - left; left < right; left++, right--) {
+            char temp = s[left];
+            s[left] = s[right];
+            s[right] = temp;
         }
+//        for (int i = 0; i < s.length / 2; i++) {
+//            char temp = s[i];
+//            s[i] = s[s.length - 1 - i];
+//            s[s.length - 1 - i] = temp;
+//        }
 //        System.out.println(s);
     }
 }
