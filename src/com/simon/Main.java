@@ -2,6 +2,7 @@ package com.simon;
 
 import com.simon.util.*;
 
+import javax.swing.text.EditorKit;
 import java.util.*;
 import java.util.LinkedList;
 
@@ -10,19 +11,23 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            char[] arr = InputUtil.inputCharArr();
-            solution.reverseString(arr);
+            int i = InputUtil.inputInt();
+            System.out.println(solution.reverse(i));
         }
     }
 }
 
 class Solution {
-    public void reverseString(char[] s) {
-        for (int i = 0; i < s.length / 2; i++) {
-            char temp = s[i];
-            s[i] = s[s.length - 1 - i];
-            s[s.length - 1 - i] = temp;
+    public int reverse(int x) {
+        int rev = 0;
+        while (x != 0) {
+            if (rev < Integer.MIN_VALUE / 10 || rev > Integer.MAX_VALUE / 10) {
+                return 0;
+            }
+            int digit = x % 10;
+            x /= 10;
+            rev = rev * 10 + digit;
         }
-//        System.out.println(s);
+        return rev;
     }
 }
