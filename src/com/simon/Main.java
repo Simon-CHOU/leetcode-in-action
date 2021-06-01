@@ -11,76 +11,95 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             String s = InputUtil.inputStr();
-            System.out.println(solution.isPalindrome(s));
+            System.out.println(solution.myAtoi(s));
         }
     }
 }
 
 class Solution {
-    public boolean isPalindrome(String s) {
-        int length = s.length();
-        int left = 0, right = length - 1;
-        while (left < right) {
-            //先跳过非字母数字，边循环边跳过，没有预处理，是最快的。
-            while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
-                ++left;
-            }
-            while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
-                --right;
-            }
-            if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {
-                return false;
-            }
-            ++left;
-            --right;
+    public int myAtoi(String s) {
+        long ans = 0;
+        s = s.trim();//去掉空格，主要是前导空格
+        if(s.length()<1){
+            return (int)ans;// 特殊处理，空字符串
         }
-        return true;
+////        int k;
+//        while( s.length()>0 ) {
+//            if (s.charAt(0) != '+'&&
+//                    s.charAt(0) != '-'&& !Character.isDigit(s.charAt(0))) {
+//                s = s.substring(1);//去掉开头数字 +-  "words and 987"
+////                i++;
+//            } else {
+//                break;
+//            }
+//        }
+        while( s.length()>0 ) {
+            if (s.charAt(0) == '0') {
+                s = s.substring(1);//去掉前导0
+            } else {
+                break;
+            }
+        }
+        //处理符号
+        int flag = 1;
+        //检查数字的实际符号, e.g. "-+12", "   -43"
+//        int len = s.length();
+//        while (len > 0) {
+            char firstCh = s.charAt(0);
+//            if(!Character.isDigit(firstCh)&&firstCh!='-'&&firstCh!='+'){
+//                break;
+//            }
+//            if (Character.isDigit(firstCh)) {
+//                break;
+//            }
+//            if (firstCh == '-') {
+//                flag = -1;
+//                s = s.substring(1);
+//            }
+//            if (firstCh == '+') {
+//                flag = 1;
+//                s = s.substring(1);
+//            }
+//            len = s.length();
+//        }
+        if (firstCh == '-') {
+            flag = -1;
+            s = s.substring(1);
+        }
+        if (firstCh == '+') {
+            flag = 1;
+            s = s.substring(1);
+        }
+
+
+        //检查数字字符串末尾
+        int end = s.length() - 1;
+        for (int i = 0; i < s.length(); i++) {
+            if (!Character.isDigit(s.charAt(i))) {
+                end = i - 1;
+                break;//非数字字符，丢弃字符串后续部分
+            }
+        }
+        //转换数字
+        for (int i = 0; i <= end; i++) {
+            if (flag * ans >= Integer.MAX_VALUE) {
+                return Integer.MAX_VALUE;//校验范围。
+            }
+            if (flag * ans <= Integer.MIN_VALUE) {
+                return Integer.MIN_VALUE;
+            }
+            ans = ans * 10 + s.charAt(i) - '0';
+        }
+        if(flag* ans>=Integer.MAX_VALUE){
+            return  Integer.MAX_VALUE;
+        }
+        if(flag *ans<=Integer.MIN_VALUE){
+            return  Integer.MIN_VALUE;
+        }
+        return (int) (flag * ans);
     }
-
-// 循环过滤
-//    public boolean isPalindrome(String s) {
-//        StringBuffer sgood = new StringBuffer();
-//        //  先过滤
-//        for (int i = 0; i < s.length(); i++) {
-//            char c = s.charAt(i);
-//            if (Character.isLetterOrDigit(c)) {
-//                sgood.append(Character.toLowerCase(c));//比正则更快
-//            }
-//        }
-//        int left = 0, right = sgood.length() - 1;
-//        while (left<right){
-//            if(sgood.charAt(left++) != sgood.charAt(right--)){
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
-
-//    // reverse ，也慢
-//    public boolean isPalindrome(String s) {
-//        StringBuffer sgood = new StringBuffer();
-//        //  先过滤
-//        for (int i = 0; i < s.length(); i++) {
-//            char c = s.charAt(i);
-//            if (Character.isLetterOrDigit(c)) {
-//                sgood.append(c);
-//            }
-//        }
-//        //回文串与其倒序相同
-//        StringBuffer sgood_rev = new StringBuffer(sgood).reverse();
-//        return sgood_rev.toString().toLowerCase().equals(sgood.toString().toLowerCase());//忽略字母的大小写
-//    }
-
-// 自解，太慢
-//    public boolean isPalindrome(String s) {
-//        //本题中，我们将空字符串定义为有效的回文串。空格不是，故不用[^a-zA-Z0-9 ]
-//        s = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();//忽略字母的大小写。
-//        int left = 0, right = s.length() - 1;
-//        while (left<right){
-//            if(s.charAt(left++) != s.charAt(right--)){
-//                return false;
-//            }
-//        }
-//        return true;
-//    }
 }
+///"+-12"  exp: 0
+// words and 987  exp: 0
+// "21474836460" exp: 2147483647
+//"00000-42a1234"  exp: 0
