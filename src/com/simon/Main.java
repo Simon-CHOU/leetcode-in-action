@@ -17,23 +17,22 @@ public class Main {
 }
 
 class Solution {
-    //hash(unicode) 慢，兼容性好
-    public boolean isAnagram(String s, String t) {
-        if (s.length() != t.length()) {// 防用例： ab, a
-            return false;
-        }
-        Map<Character, Integer> map = new HashMap<>();
-        for (int i = 0; i < s.length(); i++) {
-            char ch = s.charAt(i);
-            map.put(ch, map.getOrDefault(ch, 0) + 1);
-        }
-        for (int i = 0; i < t.length(); i++) {
-            char key = t.charAt(i);
-            Integer currentCount = map.getOrDefault(key, 0);
-            if (currentCount == 0) {
+    public boolean isPalindrome(String s) {
+        int length = s.length();
+        int left = 0, right = length - 1;
+        while (left < right) {
+            //先跳过非字母数字，边循环边跳过，没有预处理，是最快的。
+            while (left < right && !Character.isLetterOrDigit(s.charAt(left))) {
+                ++left;
+            }
+            while (left < right && !Character.isLetterOrDigit(s.charAt(right))) {
+                --right;
+            }
+            if (Character.toLowerCase(s.charAt(left)) != Character.toLowerCase(s.charAt(right))) {
                 return false;
             }
-            map.put(key, currentCount - 1);
+            ++left;
+            --right;
         }
         return true;
     }
