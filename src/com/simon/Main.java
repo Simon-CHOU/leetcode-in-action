@@ -11,8 +11,7 @@ public class Main {
     public static void main(String[] args) {
         while (true) {
             String s = InputUtil.inputStr();
-            String s1 = InputUtil.inputStr();
-            System.out.println(solution.isAnagram(s, s1));
+            System.out.println(solution.isPalindrome(s));
         }
     }
 }
@@ -39,36 +38,50 @@ class Solution {
         return true;
     }
 
-    //hash(仅ASCII字符) 次快
-//    public boolean isAnagram(String s, String t) {
-//        if (s.length() != t.length()) {
-//            return false;
-//        }
-//        int[] table = new int[26];
+// 循环过滤
+//    public boolean isPalindrome(String s) {
+//        StringBuffer sgood = new StringBuffer();
+//        //  先过滤
 //        for (int i = 0; i < s.length(); i++) {
-//            table[s.charAt(i) - 'a']++;
+//            char c = s.charAt(i);
+//            if (Character.isLetterOrDigit(c)) {
+//                sgood.append(Character.toLowerCase(c));//比正则更快
+//            }
 //        }
-//        for (int i = 0; i < t.length(); i++) {
-//            table[t.charAt(i) - 'a']--;
-//            if (table[t.charAt(i) - 'a'] < 0) {
+//        int left = 0, right = sgood.length() - 1;
+//        while (left<right){
+//            if(sgood.charAt(left++) != sgood.charAt(right--)){
 //                return false;
 //            }
 //        }
 //        return true;
 //    }
 
-    //sort 快
-//    public boolean isAnagram(String s, String t) {
-//        if (s.length() != t.length()) {
-//            return false;
+//    // reverse ，也慢
+//    public boolean isPalindrome(String s) {
+//        StringBuffer sgood = new StringBuffer();
+//        //  先过滤
+//        for (int i = 0; i < s.length(); i++) {
+//            char c = s.charAt(i);
+//            if (Character.isLetterOrDigit(c)) {
+//                sgood.append(c);
+//            }
 //        }
-//        char[] sChars = s.toCharArray();
-//        char[] tChars = t.toCharArray();
-//        Arrays.sort(sChars);
-//        Arrays.sort(tChars);
-//        if (Arrays.equals(sChars, tChars)) {
-//            return true;
+//        //回文串与其倒序相同
+//        StringBuffer sgood_rev = new StringBuffer(sgood).reverse();
+//        return sgood_rev.toString().toLowerCase().equals(sgood.toString().toLowerCase());//忽略字母的大小写
+//    }
+
+// 自解，太慢
+//    public boolean isPalindrome(String s) {
+//        //本题中，我们将空字符串定义为有效的回文串。空格不是，故不用[^a-zA-Z0-9 ]
+//        s = s.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();//忽略字母的大小写。
+//        int left = 0, right = s.length() - 1;
+//        while (left<right){
+//            if(s.charAt(left++) != s.charAt(right--)){
+//                return false;
+//            }
 //        }
-//        return false;
+//        return true;
 //    }
 }
