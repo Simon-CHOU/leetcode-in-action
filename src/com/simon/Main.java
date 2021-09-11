@@ -10,33 +10,31 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            ListNode node = InputUtil.inputLinkedList();//[1,2,3,4,5]
-            solution.reverseList(node);
+            String str = InputUtil.inputStr();
+            solution.isValid(str);
 
         }
     }
 }
 
-/**
- * Definition for singly-linked list.
- * public class ListNode {
- * int val;
- * ListNode next;
- * ListNode() {}
- * ListNode(int val) { this.val = val; }
- * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
- * }
- */
 class Solution {
-    public ListNode reverseList(ListNode head) {
-        ListNode prev = null;
-        ListNode cur = head;
-        while (cur != null) {
-            ListNode next = cur.next;//缓存下一个节点
-            cur.next = prev;
-            prev = cur;
-            cur = next;
+    public boolean isValid(String s) {
+        if (s.length() == 0) {
+            return true;
         }
-        return prev;
+        List<String> stack = new ArrayList<>();
+        for (char c : s.toCharArray()) {
+            if (c == '(' || c == '[' || c == '{') {
+                stack.add(String.valueOf(c));
+            } else if ((c == ')' && stack.size() > 0 && stack.get(stack.size() - 1).equals("(")) ||
+                    (c == ']' && stack.size() > 0 && stack.get(stack.size() - 1).equals("[")) ||
+                    (c == '}' && stack.size() > 0 && stack.get(stack.size() - 1).equals("{"))) {
+                stack = stack.subList(0, stack.size() - 1);
+                //&& stack.size()>0  is for input: "]"
+            } else {
+                return false;
+            }
+        }
+        return stack.size() == 0;
     }
 }
