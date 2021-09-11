@@ -10,29 +10,33 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            int[] array1 = InputUtil.inputIntArray();
-            int[] array2 = InputUtil.inputIntArray();
-            int len1 = InputUtil.inputInt();
-            int len2 = InputUtil.inputInt();
-            solution.merge(array1, len1, array2, len2);
+            ListNode node = InputUtil.inputLinkedList();//[1,2,3,4,5]
+            solution.reverseList(node);
+
         }
     }
 }
 
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ * int val;
+ * ListNode next;
+ * ListNode() {}
+ * ListNode(int val) { this.val = val; }
+ * ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+ * }
+ */
 class Solution {
-    public void merge(int[] nums1, int m, int[] nums2, int n) {
-        for (int p = m + n; n > 0 && m > 0; p--) {
-            if (nums1[m - 1] > nums2[n - 1]) {
-                nums1[p - 1] = nums1[m - 1];
-                m--;
-            } else {
-                nums1[p - 1] = nums2[n - 1];
-                n--;
-            }
+    public ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode cur = head;
+        while (cur != null) {
+            ListNode next = cur.next;//缓存下一个节点
+            cur.next = prev;
+            prev = cur;
+            cur = next;
         }
-        for (; n > 0; n--) {
-            nums1[n - 1] = nums2[n - 1];
-        }
-
+        return prev;
     }
 }
