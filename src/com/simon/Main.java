@@ -10,54 +10,29 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            String s = InputUtil.inputStr();
-            System.out.println(solution.myAtoi(s));
+            int[] array1 = InputUtil.inputIntArray();
+            int[] array2 = InputUtil.inputIntArray();
+            int len1 = InputUtil.inputInt();
+            int len2 = InputUtil.inputInt();
+            solution.merge(array1, len1, array2, len2);
         }
     }
 }
 
 class Solution {
-    public int myAtoi(String s) {
-        Automaton automaton = new Automaton();
-        int length = s.length();
-        for (int i = 0; i < length; i++) {
-            automaton.get(s.charAt(i));
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        for (int p = m + n; n > 0 && m > 0; p--) {
+            if (nums1[m - 1] > nums2[n - 1]) {
+                nums1[p - 1] = nums1[m - 1];
+                m--;
+            } else {
+                nums1[p - 1] = nums2[n - 1];
+                n--;
+            }
         }
-        return (int) (automaton.sign * automaton.ans);
-    }
-}
+        for (; n > 0; n--) {
+            nums1[n - 1] = nums2[n - 1];
+        }
 
-class Automaton {
-    public int sign = 1;
-    public long ans = 0;
-    private String state = "start";
-    private Map<String, String[]> table = new HashMap<>() {{
-        put("start", new String[]{"start", "signed", "in_number", "end"});
-        put("signed", new String[]{"end", "end", "in_number", "end"});
-        put("in_number", new String[]{"end", "end", "in_number", "end"});
-        put("end", new String[]{"end", "end", "end", "end"});// 四列分别表示接受的char ' ',	+/-, number, other
-    }};//用表格表示自动机
-
-    public void get(char c) {
-        state = table.get(state)[get_col(c)];
-        if ("in_number".equals(state)) {
-            ans = ans * 10 + c - '0';
-            ans = sign == 1 ? Math.min(ans, (long) Integer.MAX_VALUE) : Math.min(ans, -(long) Integer.MIN_VALUE);
-        } else if ("signed".equals(state)) {
-            sign = c == '+' ? 1 : -1;
-        }
-    }
-
-    public int get_col(char c) {
-        if (c == ' ') {
-            return 0;
-        }
-        if (c == '+' || c == '-') {
-            return 1;
-        }
-        if (Character.isDigit(c)) {
-            return 2;
-        }
-        return 3;
     }
 }
