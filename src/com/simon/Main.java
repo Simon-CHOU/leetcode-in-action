@@ -10,31 +10,21 @@ public class Main {
 
     public static void main(String[] args) {
         while (true) {
-            String str = InputUtil.inputStr();
-            solution.isValid(str);
+            int[] arr = InputUtil.inputIntArray();// [-2,1,-3,4,-1,2,1,-5,4]
+            int i = solution.maxSubArray(arr);
+            System.out.println(i);
 
         }
     }
 }
 
 class Solution {
-    public boolean isValid(String s) {
-        if (s.length() == 0) {
-            return true;
+    public int maxSubArray(int[] nums) { // Dynamic Programming
+        int pre = 0, maxAns = nums[0];
+        for (int x : nums) {
+            pre = Math.max(pre + x, x); // f(i)=max{f(i−1)+nums[i],nums[i]}
+            maxAns = Math.max(maxAns, pre);
         }
-        List<String> stack = new ArrayList<>();
-        for (char c : s.toCharArray()) {
-            if (c == '(' || c == '[' || c == '{') {
-                stack.add(String.valueOf(c));
-            } else if ((c == ')' && stack.size() > 0 && stack.get(stack.size() - 1).equals("(")) ||
-                    (c == ']' && stack.size() > 0 && stack.get(stack.size() - 1).equals("[")) ||
-                    (c == '}' && stack.size() > 0 && stack.get(stack.size() - 1).equals("{"))) {
-                stack = stack.subList(0, stack.size() - 1);
-                //&& stack.size()>0  is for input: "]"
-            } else {
-                return false;
-            }
-        }
-        return stack.size() == 0;
+        return maxAns;
     }
 }
