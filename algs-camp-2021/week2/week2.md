@@ -68,6 +68,32 @@ class Solution {
     }//-3 * 104 <= xi, yi <= 3 * 104
 }
 ```
-
+### 49. 字母异位词分组
+```java
+//49. 字母异位词分组
+class Solution {
+    private Map<String, List<String>> groups = new HashMap<>();
+    public List<List<String>> groupAnagrams(String[] strs) {
+        for(String str : strs){
+            String copy = sortStr(str); //把排好序的字符串为键
+            if(!groups.containsKey(copy)){
+                groups.put(copy, new ArrayList<String>());//还没有词组，新建List
+            }
+            groups.get(copy).add(str);//已有字母异位词组，则收录
+        }
+        return new ArrayList<>(groups.values());
+    }
+    private String sortStr(String str){
+        char [] ori = str.toCharArray();
+        Arrays.sort(ori);
+        return new String(ori);
+    }
+}
+/*
+ https://www.geeksforgeeks.org/traverse-through-a-hashmap-in-java/
+ https://mkyong.com/java8/java-8-convert-map-to-list/
+ https://www.geeksforgeeks.org/sort-a-string-in-java-2-different-ways/
+ */
+```
 ## lesson 4: Prefix sum, difference, double pointer
 
