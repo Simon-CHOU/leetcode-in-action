@@ -19,6 +19,55 @@ class Solution {
     }
 }
 ```
+### 874. 模拟行走机器人
+```java
+// 874. 模拟行走机器人
+class Solution {
+    public int robotSim(int[] commands, int[][] obstacles) {
+        HashSet<Long> set = new HashSet<Long>();
+        for(int[]obs : obstacles){
+            set.add(calcHash(obs));
+        }
+        int x = 0, y = 0;//初始
+        int direction = 0;// 方向 N=0, E=1, S=2, W=3
+        //转方向，通过mod运算实现分支逻辑，比if-else更简洁
+        //向右转 (dir+1)%4
+        //向左转 (dir-1 +4)%4， +4是为了避免为负数， 避免(0-1)%4=-1。即(dir+3)%4
+        // 网格中行走题目，技巧：方向数组
+        final int []dx = {0, 1, 0, -1};
+        final int []dy = {1, 0, -1, 0};
+        int ans = 0;
+        for(int command: commands){
+            if(command == -1){
+                direction = (direction+1)%4;
+            }else if(command == -2){
+                direction = (direction+3)%4;
+            }else{
+                for( int i=0; i< command; i++){
+                   int nx = x + dx[direction];
+                   int ny = y+ dy[direction];
+                   if(set.contains(calcHash(new int[]{nx, ny}))){
+                      break;//如果是障碍物，则不动
+                   }
+                   x = nx;
+                   y =ny;
+                   ans = Math.max(ans, x*x + y*y);//保存最大欧氏距离
+                }
+
+            }
+        }
+        return ans;
+    }
+
+    /*private String calcHash(int [] obstacle){
+        return obstacle[0] + "," + obstacle[1];//坐标，只有x,y两元
+    }*/
+    private Long calcHash(int [] obstacle){
+        //二维坐标转为整数，当前行*列数+当前列号。平移去掉符号
+        return (obstacle[0] +30000L) * 60001L + (obstacle[1]+30000L);
+    }//-3 * 104 <= xi, yi <= 3 * 104
+}
+```
 
 ## lesson 4: Prefix sum, difference, double pointer
 
