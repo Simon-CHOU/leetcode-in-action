@@ -41,3 +41,21 @@ class Solution {
     }
 }
 ```
+
+## 66. 加一
+```java
+//66. 加一
+class Solution {
+    public int[] plusOne(int[] digits) {
+        int len = digits.length;
+        for (int i = len - 1; i >= 0; i--) {
+            digits[i]++;
+            digits[i] = digits[i] % 10;//除了9 加1进位(且原位为0），其他都不进位
+            if (digits[i] != 0) return digits;
+        }
+        digits = new int[len + 1];//处理99,999..等特殊情况，进位1，且其余都是0
+        digits[0] = 1;
+        return digits;
+    }
+}
+```
