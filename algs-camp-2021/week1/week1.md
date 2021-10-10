@@ -88,3 +88,36 @@ class Solution {
     }
 }
 ```
+
+## 20. 有效的括号
+
+```java
+//20. 有效的括号
+class Solution {
+    Stack<Character> stack = new Stack<>();
+    public boolean isValid(String s) {
+        char [] chars = s.toCharArray();
+        for(char ch : chars){
+            if(ch == '(' ||ch == '[' ||ch == '{' ){
+                stack.push(ch);
+            } else{
+                if(stack.empty()) {
+                    return false;
+                }
+                char topChar = stack.pop();
+                if(ch ==')'  && topChar !='('){
+                    return false;
+                }
+                if(ch ==']'  && topChar !='['){
+                    return false;
+                }
+                if(ch =='}'  && topChar !='{'){
+                    return false;
+                }
+
+            }
+        }
+        return stack.empty();
+    }
+}
+```
