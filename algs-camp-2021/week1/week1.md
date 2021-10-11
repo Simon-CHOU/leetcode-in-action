@@ -121,3 +121,34 @@ class Solution {
     }
 }
 ```
+
+## 150. 逆波兰表达式求值
+```java
+//150. 逆波兰表达式求值
+class Solution {
+    private Stack<Integer> s = new Stack<>();
+    public int evalRPN(String[] tokens) {
+      for(String token : tokens) {
+          if(token.equals("+") ||token.equals("-") ||token.equals("*") ||token.equals("/")){ //字符串比较用euquals不能用==
+             Integer op1 = s.peek();
+             s.pop();
+             Integer op2 = s.peek();
+             s.pop();
+             int ans = calc(op2, op1, token);// 运算是有顺序的，-,/
+             s.push(ans);
+          } else {
+              s.push(Integer.valueOf(token));
+          }
+      }
+      return s.peek();
+    }
+
+    private Integer calc(Integer x, Integer y, String op) {
+       if(op.equals("+")) {return x + y;}
+       if(op.equals("-")) {return x - y;}
+       if(op.equals("*")) {return x * y;}
+       if(op.equals("/")) {return x / y;}
+       return 0;// illegal
+    }
+}
+```
