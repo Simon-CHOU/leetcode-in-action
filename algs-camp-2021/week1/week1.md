@@ -152,3 +152,81 @@ class Solution {
     }
 }
 ```
+# 227. 基本计算器 II
+```java
+//227. 基本计算器 II 
+class Solution {
+
+    private Stack<Character> ops = new Stack<>();//运算符栈，用以处理优先级
+
+    public int calculate(String s) {
+        s+=" "; //保证末尾数字能被从number中推出来
+        List<String> tokens = new ArrayList<>();//存储转化的后缀表达式
+        StringBuilder number = new StringBuilder();
+        for(char ch : s.toCharArray()) {
+            if(ch >= '0' && ch <= '9') {
+              number.append(ch);//多个数字组成一个整数
+              continue;
+            } else {
+                if(number.length() !=0){ //前一位是数字
+                    tokens.add(number.toString());
+                    number.setLength(0);//clean
+                }//至此完成了一个整数的处理
+            }
+            if(ch == ' ') {
+                continue;
+            }
+            int currRank = getRank(ch);
+            while(!ops.empty() && getRank(ops.peek()) >= currRank){
+              tokens.add(Character.toString(ops.peek()));
+              ops.pop();
+            }
+            ops.push(ch);
+        }
+        while(!ops.empty()){
+            tokens.add(Character.toString(ops.peek()));
+            ops.pop();
+        }//至此得到了后缀表达式 tokens
+
+        return evalRPN(tokens.toArray(new String[0]));
+    }
+ 
+      /**
+     * 返回优先级
+    */
+    private int getRank(char op){
+        if(op =='*' || op =='/') {return 2;}
+        if(op == '+' || op == '-') {return 1;}
+        return 0;
+    }
+
+
+     Stack<Integer> s = new Stack<>();
+    public int evalRPN(String[] tokens) {
+      for(String token : tokens) {
+          if(token.equals("+") ||
+          token.equals("-") ||
+          token.equals("*") ||
+          token.equals("/")){ //字符串比较用euquals不能用==
+             Integer op1 = s.peek();
+             s.pop();
+             Integer op2 = s.peek();
+             s.pop();
+             int ans = calc(op2, op1, token);// 运算是有顺序的，-,/
+             s.push(ans);
+          } else {
+              s.push(Integer.valueOf(token));
+          }
+      }
+      return s.peek();
+    }
+
+    Integer calc(Integer x, Integer y, String op) {
+       if(op.equals("+")) {return x + y;}
+       if(op.equals("-")) {return x - y;}
+       if(op.equals("*")) {return x * y;}
+       if(op.equals("/")) {return x / y;}
+       return 0;// illegal
+    }
+}
+```
