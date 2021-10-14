@@ -95,6 +95,81 @@ class Solution {
  https://www.geeksforgeeks.org/sort-a-string-in-java-2-different-ways/
  */
 ```
+
+### 30. 串联所有单词的子串 todo
+```java
+// 30. 串联所有单词的子串
+class Solution {
+    
+    HashMap<String, Integer> wordsMap = new HashMap<>();
+    
+    public List<Integer> findSubstring(String s, String[] words) {
+       int tot = 0;//total lenght
+       for( String word : words) {
+           tot += word.length();
+           if(wordsMap.size()>0 && wordsMap.containsKey(word)) {
+               wordsMap.put(word, wordsMap.get(word)+1);
+           } else {
+               wordsMap.put(word, 1);
+           }
+       }
+
+       System.out.println("tot=" + tot);
+       List<Integer> ans = new ArrayList<>();
+       for (int i =0; i + tot <= s.length(); i++) {
+           System.out.println("--- i="+i+", i+t="+(i+tot)+", s.substring(i, tot)=" +s.substring(i, i + tot));
+           if(valid(s.substring(i, i + tot), words)){
+                ans.add(i);
+           }
+       }
+       return ans;
+    }
+
+    private boolean valid(String str, String[] words){
+        System.out.print("#begin valid str=" + str+", words=");
+        for(String w: words ){ System.out.print(w+",");}
+        int k = words[0].length();
+        HashMap<String, Integer> splitWordsMap = new HashMap<>();
+        System.out.println("   k:"+k);
+        for( int i = 0; i< str.length(); i += k) {
+            System.out.println("#validfor i="+i+", k="+k +"  str.length()=" + str.length());
+            String key = str.substring(i, k);
+            if(key.equals("")){System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~");}
+            System.out.println("** substring:" + key);
+            if(splitWordsMap.size()>0 && splitWordsMap.containsKey(key)) {
+               splitWordsMap.put(key, splitWordsMap.get(key)+1);
+           } else {
+               splitWordsMap.put(key, 1);
+           }
+        }
+        System.out.print("#end valid: splitWordsMap:");
+       for(Map.Entry e : splitWordsMap.entrySet()) {System.out.print("["+e.getKey()+","+e.getValue()+"],");}
+       System.out.print(" / wordsMap:");
+       for(Map.Entry e : wordsMap.entrySet()) {System.out.print("["+e.getKey()+","+e.getValue()+"],");}
+        System.out.println("");
+        return equalsMap(splitWordsMap, wordsMap);
+    }
+
+    boolean equalsMap(HashMap<String, Integer> a ,HashMap<String, Integer> b) {
+        for(Map.Entry e: a.entrySet()){
+            String key = (String) e.getKey();
+            int value = (int) e.getValue();
+            if(!b.containsKey(key) || b.get(key) != value) { 
+                return false;
+            }
+        }
+        for(Map.Entry e: b.entrySet()){
+            String key = (String) e.getKey();
+            int value = (int) e.getValue();
+            if(!a.containsKey(key) || a.get(key) != value) { 
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
 ## lesson 4: Prefix sum, difference, double pointer
 
 ### 1248. 统计「优美子数组」
@@ -152,4 +227,31 @@ class NumMatrix {
         return sum[row2][col2] - sum[row2][col1 - 1] - sum[row1 - 1][col2] + sum[row1 - 1][col1 - 1];
     }
 }
+```
+
+### 1109. 航班预订统计
+
+```java
+//1109. 航班预订统计
+class Solution {
+    public int[] corpFlightBookings(int[][] bookings, int n) {
+      List<Integer> delta = new ArrayList<>(Collections.nCopies(n+2, 0));// n+1 有用，故再挪一个。
+      for(int[] booking : bookings) {
+          int first = booking[0];
+          int last = booking[1];
+          int seats = booking[2];
+          delta.set(first, delta.get(first) + seats);
+          delta.set(last + 1, delta.get(last + 1) - seats);
+      }
+      List<Integer> sum = new ArrayList<>(Collections.nCopies(n+1, 0)); //0~n
+      for (int i = 1; i <= n; i++) {
+          sum.set(i, sum.get(i - 1) + delta.get(i));
+      }
+       int[] answer = new int[n]; //0~n-1
+       for(int i = 1; i <= n; i++) {
+           answer[i-1] =  sum.get(i);
+       }
+       return answer;
+    }
+}   
 ```
