@@ -97,3 +97,32 @@ class Solution {
 ```
 ## lesson 4: Prefix sum, difference, double pointer
 
+### 1248. 统计「优美子数组」
+```java
+//1248. 统计「优美子数组」
+class Solution {
+    
+    public int numberOfSubarrays(int[] nums, int k) {
+        int n = nums.length;
+        List<Integer> s = new ArrayList<>(n+1);
+        for(int i = 0 ;i<=n; i++) {s.add(0);}
+        s.set(0, 0);
+        for(int i = 1; i <= n; i++) {
+            s.set(i, s.get(i-1) + nums[i-1]%2);
+        }
+        List<Integer> count = new ArrayList<>(n+1);
+        for(int i = 0 ;i<=n; i++) {count.add(0);}
+        int ans = 0;
+        // System.out.println(s.toString());
+        // System.out.println("s.get(0) = " + s.get(0));
+        count.set(s.get(0), count.get(s.get(0)) +1);
+        for(int i = 1; i <= n; i++) {
+            if(s.get(i) - k >= 0) {
+                ans += count.get(s.get(i) - k);
+            }
+            count.set(s.get(i), count.get(s.get(i)) + 1);
+        }
+        return ans;
+    }
+}
+```
