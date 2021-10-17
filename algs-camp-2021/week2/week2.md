@@ -102,6 +102,67 @@ class Solution {
  */
 ```
 ### 811. 和为 K 的子数组
+```java
+// 811. 和为 K 的子数组
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        int prefixSum = 0;
+        HashMap<Integer, Integer> memo = new HashMap<>();
+        memo.put(0,1);
+        int count = 0;
+        for(int i = 0 ; i < nums.length; i++) {
+            prefixSum += nums[i];
+            System.out.println("prefixSum = " + prefixSum +" ");
+            if(memo.containsKey(prefixSum - k)) {
+                //使用递推公式检验
+                System.out.println("#prefixSum-k=" +(prefixSum - k) +"  memo.getOrDefault(prefixSum - k, 0)=" + memo.getOrDefault(prefixSum - k, 0));
+                count += memo.getOrDefault(prefixSum - k, 0);
+            }// 计数，在更新序列和之前!!!
+            if(!memo.containsKey(prefixSum)) {
+                // System.out.println("# put(" + prefixSum  +"," +1+")");
+                memo.put(prefixSum, 1);
+            } else {
+                // System.out.println("memo.getOrDefault(prefixSum, 0)="+ memo.getOrDefault(prefixSum, 0));
+                // System.out.println("# put(" + prefixSum+"," +( memo.getOrDefault(prefixSum, 0) + 1)+")");
+                memo.put(prefixSum, memo.getOrDefault(prefixSum, 0) + 1);
+            }// 至此，前缀和维护完毕            
+        }
+        //display hashmap
+        for(Map.Entry<Integer, Integer> e : memo.entrySet()) {
+            System.out.print("{" + e.getKey() +"," + e.getValue()+"}");
+        }
+        return count;
+    }
+}
+/*
+case 1
+[3,4,7,2,-3,1,4,2]
+7
+
+prefixSum = 3 
+prefixSum = 7 
+#prefixSum-k=0  memo.getOrDefault(prefixSum - k, 0)=1
+prefixSum = 14 
+#prefixSum-k=7  memo.getOrDefault(prefixSum - k, 0)=1
+prefixSum = 16 
+prefixSum = 13 
+prefixSum = 14 
+#prefixSum-k=7  memo.getOrDefault(prefixSum - k, 0)=1
+prefixSum = 18 
+prefixSum = 20 
+#prefixSum-k=13  memo.getOrDefault(prefixSum - k, 0)=1
+{0,1}{16,1}{18,1}{3,1}{20,1}{7,1}{13,1}{14,2}
+
+
+case  2
+[1]
+0
+
+prefixSum = 1 {0,1}{1,1}
+
+
+ */
+```
 ### 1074. 元素和为目标值的子矩阵数量
 
 
