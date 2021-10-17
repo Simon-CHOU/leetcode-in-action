@@ -1,6 +1,69 @@
 # week2 
 本周作业提交：https://jinshuju.net/f/I8BtXf
 
+## 作业
+### 811. 子域名访问计数
+### 697. 数组的度
+```java
+// 697. 数组的度
+class Solution {
+    public int findShortestSubArray(int[] nums) {
+        Map<Integer, int[]> map = new HashMap<Integer, int[]>();
+        int n = nums.length;
+        for( int i = 0; i < n; i++) {
+            if(map.containsKey(nums[i])) {
+                map.get(nums[i])[0]++;
+                map.get(nums[i])[2] = i;
+                System.out.println("-update key="+nums[i]+ ",  [" +  map.get(nums[i])[0] + "," +  map.get(nums[i])[1] + "," +  map.get(nums[i])[2] + "]");
+            } else {
+                // count, begin, end
+                System.out.println("*put nums[i]=" + nums[i] + ",  [" + 1 + "," + i + "," + i + "]");
+                map.put(nums[i], new int[]{1, i, i});
+            }
+        }
+        for(Map.Entry<Integer, int[]> e : map.entrySet()) {
+            System.out.print("#map:key=" + e.getKey()+", ");
+            int[] aa = e.getValue();
+            for(int k : aa) {
+                System.out.print(k + " ");
+            }
+            System.out.printf("%s", "\n");
+        }
+        int maxNum = 0; //任一元素出现频数的最大值
+        int minLen = 0; //最短连续子数组的长度
+        for(Map.Entry<Integer, int[]> e : map.entrySet()) {
+            int[] arr = e.getValue();
+            if(maxNum < arr[0]) {
+                maxNum = arr[0];
+                minLen = arr[2] - arr[1] + 1;
+            } else if(maxNum == arr[0]) {
+                if(minLen > arr[2] - arr[1] + 1){
+                    minLen = arr[2] - arr[1] + 1;
+                }
+            }
+        }
+        return minLen;
+
+    }
+}
+/* [1,2,2,3,1,4,2]
+*put nums[i]=1,  [1,0,0]
+*put nums[i]=2,  [1,1,1]
+-update key=2,  [2,1,2]
+*put nums[i]=3,  [1,3,3]
+-update key=1,  [2,0,4]
+*put nums[i]=4,  [1,5,5]
+-update key=2,  [3,1,6]
+#map:key=1, 2 0 4 
+#map:key=2, 3 1 6 
+#map:key=3, 1 3 3 
+#map:key=4, 1 5 5 
+ */
+```
+### 811. 子域名访问计数
+### 811. 子域名访问计数
+
+
 ## lesson 3: hashtable, set, map
 
 ### 1. 两数之和
