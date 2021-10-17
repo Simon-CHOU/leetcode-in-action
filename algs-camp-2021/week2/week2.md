@@ -3,6 +3,47 @@
 
 ## 作业
 ### 811. 子域名访问计数
+```java
+// 811. 子域名访问计数
+class Solution {
+    public List<String> subdomainVisits(String[] cpdomains) {
+        Map<String, Integer> counts = new HashMap<>();
+        for (String domain: cpdomains) {
+            String[] cpinfo = domain.split("\\s+");// 分离数值，域名
+            // for(String c : cpinfo) {
+            //     System.out.print(c + ",");
+            // }
+            // System.out.printf("%s", "\n");
+            String[] frags = cpinfo[1].split("\\.");// 分离各级域名（每个域名地址包含一个或两个"."符号）
+            // for(String f : frags) {
+            //     System.out.print(f + "; ");
+            // }
+            // System.out.printf("%s", "\n");
+            int count = Integer.valueOf(cpinfo[0]);
+            String cur = "";
+            for( int i = 0; i <= frags.length -1; i++) {
+                StringBuilder str = new StringBuilder();
+                for(int j = i; j <= frags.length-1 ; j++) {
+                    str.append(frags[j]);
+                    if(j != frags.length -1) {
+                        str.append(".");
+                    }
+                }
+                cur = str.toString();// a.b.c ; b.c; b.c
+                // System.out.println("#cur:"+ str.toString());        
+                counts.put(cur, counts.getOrDefault(cur, 0) + count);
+                // System.out.println("# i=" + i +", cur=" + cur + ", put count[" +cur+"," + counts.getOrDefault(cur, 0) + ", "+count +"]");   
+            }
+
+        }
+
+        List<String> ans = new ArrayList<>();
+        for (String dom: counts.keySet())
+            ans.add(counts.get(dom) + " " + dom);
+        return ans;
+    }
+}
+```
 ### 697. 数组的度
 ```java
 // 697. 数组的度
@@ -60,8 +101,8 @@ class Solution {
 #map:key=4, 1 5 5 
  */
 ```
-### 811. 子域名访问计数
-### 811. 子域名访问计数
+### 811. 和为 K 的子数组
+### 1074. 元素和为目标值的子矩阵数量
 
 
 ## lesson 3: hashtable, set, map
