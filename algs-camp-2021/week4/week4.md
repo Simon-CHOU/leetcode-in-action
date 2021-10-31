@@ -5,19 +5,69 @@
 ### 538. 把二叉搜索树转换为累加树
 ```java
 // 538. 把二叉搜索树转换为累加树
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
 class Solution {
     int sum = 0;
-
     public TreeNode convertBST(TreeNode root) {
-        if (root != null) {
+        if(root != null) {
+            System.out.println("current root.val="+root.val);
             convertBST(root.right);
+            int cache = sum;
             sum += root.val;
             root.val = sum;
+            System.out.println("sum=sum + rool.val=" + cache + " + " + sum + ", root.val=sum=" + sum);
             convertBST(root.left);
         }
         return root;
     }
 }
+/*
+origin:
+     4
+  1    6
+0  2  5  7
+    3     8
+greater sum tree:
+     30
+  36    21
+36  35  26  15
+    33     8
+*/
+/*log:
+current root.val=4
+current root.val=6
+current root.val=7
+current root.val=8
+sum=sum + rool.val=0 + 8, root.val=sum=8
+sum=sum + rool.val=8 + 15, root.val=sum=15
+sum=sum + rool.val=15 + 21, root.val=sum=21
+current root.val=5
+sum=sum + rool.val=21 + 26, root.val=sum=26
+sum=sum + rool.val=26 + 30, root.val=sum=30
+current root.val=1
+current root.val=2
+current root.val=3
+sum=sum + rool.val=30 + 33, root.val=sum=33
+sum=sum + rool.val=33 + 35, root.val=sum=35
+sum=sum + rool.val=35 + 36, root.val=sum=36
+current root.val=0
+sum=sum + rool.val=36 + 36, root.val=sum=36
+*/
+
 ```
 
 ### 355. 设计推特
