@@ -29,7 +29,7 @@ class Solution {
             int cache = sum;
             sum += root.val;
             root.val = sum;
-            System.out.println("sum=sum + rool.val=" + cache + " + " + sum + ", root.val=sum=" + sum);
+            System.out.println("sum=sum + root.val=" + cache + " + " + sum + ", root.val=sum=" + sum);
             convertBST(root.left);
         }
         return root;
@@ -52,20 +52,20 @@ current root.val=4
 current root.val=6
 current root.val=7
 current root.val=8
-sum=sum + rool.val=0 + 8, root.val=sum=8
-sum=sum + rool.val=8 + 15, root.val=sum=15
-sum=sum + rool.val=15 + 21, root.val=sum=21
+sum=sum + root.val=0 + 8, root.val=sum=8
+sum=sum + root.val=8 + 15, root.val=sum=15
+sum=sum + root.val=15 + 21, root.val=sum=21
 current root.val=5
-sum=sum + rool.val=21 + 26, root.val=sum=26
-sum=sum + rool.val=26 + 30, root.val=sum=30
+sum=sum + root.val=21 + 26, root.val=sum=26
+sum=sum + root.val=26 + 30, root.val=sum=30
 current root.val=1
 current root.val=2
 current root.val=3
-sum=sum + rool.val=30 + 33, root.val=sum=33
-sum=sum + rool.val=33 + 35, root.val=sum=35
-sum=sum + rool.val=35 + 36, root.val=sum=36
+sum=sum + root.val=30 + 33, root.val=sum=33
+sum=sum + root.val=33 + 35, root.val=sum=35
+sum=sum + root.val=35 + 36, root.val=sum=36
 current root.val=0
-sum=sum + rool.val=36 + 36, root.val=sum=36
+sum=sum + root.val=36 + 36, root.val=sum=36
 */
 
 ```
