@@ -45,7 +45,7 @@ greater sum tree:
      30
   36    21
 36  35  26  15
-    33     8
+    33        8
 */
 /*log:
 current root.val=4
