@@ -132,7 +132,7 @@ left=13, right=15, mid=14
 ```
 
 
-### 911. 在线选举(读不懂题)
+### 911. 在线选举(读不懂题，先抄题解)
 ```java
 // 911. 在线选举
 class TopVotedCandidate {
@@ -184,6 +184,43 @@ class Vote {
     Vote(int p, int t) {
         person = p;
         time = t;
+    }
+}
+```
+
+
+## 875. 爱吃香蕉的珂珂
+
+```java
+//875. 爱吃香蕉的珂珂
+class Solution {
+    public int minEatingSpeed(int[] piles, int h) {
+        int low = 1;
+        int high = 1000000000;//1 <= piles[i] <= 10^9
+        System.out.println(high);
+        while (low < high) {
+            int min = (low + high) /2;
+            if(!possible(piles, h, min)) {
+                low = min +1;
+            } else {
+                high = min;
+            } // 二分模板核心
+        }
+        return low;
+    }
+    /**
+     检验速度是否可行
+     @param piles 香蕉堆
+     @param H 用餐时间
+     @param K 平均速度 根/小时
+
+     */
+    private boolean possible(int[] piles, int H, int K) {
+        int time = 0;
+        for (int p: piles) {
+            time += (p - 1) / K + 1;
+        }
+        return time <= H;
     }
 }
 ```
