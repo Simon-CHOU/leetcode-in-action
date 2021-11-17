@@ -61,3 +61,124 @@ f(3) = 3
 ```
 
 ## exmaple
+
+
+### 300. 最长递增子序列
+```java
+// 300. 最长递增子序列
+class Solution {
+    public int lengthOfLIS(int[] nums) {
+        if(nums.length == 0) {
+            return 0;
+        }
+        int[] dp = new int[nums.length];
+        dp[0] = 1;
+        int maxAns = 1;
+        for ( int i = 1; i < nums.length; i++) {
+            dispArr(dp, "##b");
+            dp[i] = 1;
+            dispArr(dp, "##a");
+            for (int j = 0; j < i ; j++) {
+                if (nums[i] > nums[j]) {
+                    dispArr(dp, "  --b");
+                    System.out.println("  ~~dp[i]"+ dp[i]+ ", dp[j]="+ dp[j] );
+                    dp[i] = Math.max(dp[i], dp[j] + 1);
+                    dispArr(dp, " --a");
+                }
+            }
+            System.out.print("MaxAns is change from " + maxAns);
+            maxAns = Math.max(maxAns, dp[i]);
+            System.out.println(" to " +maxAns);
+        }
+        return maxAns;
+    }
+    private void dispArr(int [] nums, String preffix) {
+        System.out.print(preffix+"[");
+        for(int i = 0; i< nums.length-1; i++) {
+            System.out.print(nums[i]+",");
+        }
+
+        System.out.println(nums[nums.length-1] + "]");
+    }
+}
+
+/*
+[10,9,2,5,3,7,101,18]
+num[] is constant
+
+dp status log
+
+##b[1,0,0,0,0,0,0,0]
+##a[1,1,0,0,0,0,0,0]
+MaxAns is change from 1 to 1
+##b[1,1,0,0,0,0,0,0]
+##a[1,1,1,0,0,0,0,0]
+MaxAns is change from 1 to 1
+##b[1,1,1,0,0,0,0,0]
+##a[1,1,1,1,0,0,0,0]
+  --b[1,1,1,1,0,0,0,0]
+  ~~dp[i]1, dp[j]=1
+ --a[1,1,1,2,0,0,0,0]
+MaxAns is change from 1 to 2
+##b[1,1,1,2,0,0,0,0]
+##a[1,1,1,2,1,0,0,0]
+  --b[1,1,1,2,1,0,0,0]
+  ~~dp[i]1, dp[j]=1
+ --a[1,1,1,2,2,0,0,0]
+MaxAns is change from 2 to 2
+##b[1,1,1,2,2,0,0,0]
+##a[1,1,1,2,2,1,0,0]
+  --b[1,1,1,2,2,1,0,0]
+  ~~dp[i]1, dp[j]=1
+ --a[1,1,1,2,2,2,0,0]
+  --b[1,1,1,2,2,2,0,0]
+  ~~dp[i]2, dp[j]=2
+ --a[1,1,1,2,2,3,0,0]
+  --b[1,1,1,2,2,3,0,0]
+  ~~dp[i]3, dp[j]=2
+ --a[1,1,1,2,2,3,0,0]
+MaxAns is change from 2 to 3
+##b[1,1,1,2,2,3,0,0]
+##a[1,1,1,2,2,3,1,0]
+  --b[1,1,1,2,2,3,1,0]
+  ~~dp[i]1, dp[j]=1
+ --a[1,1,1,2,2,3,2,0]
+  --b[1,1,1,2,2,3,2,0]
+  ~~dp[i]2, dp[j]=1
+ --a[1,1,1,2,2,3,2,0]
+  --b[1,1,1,2,2,3,2,0]
+  ~~dp[i]2, dp[j]=1
+ --a[1,1,1,2,2,3,2,0]
+  --b[1,1,1,2,2,3,2,0]
+  ~~dp[i]2, dp[j]=2
+ --a[1,1,1,2,2,3,3,0]
+  --b[1,1,1,2,2,3,3,0]
+  ~~dp[i]3, dp[j]=2
+ --a[1,1,1,2,2,3,3,0]
+  --b[1,1,1,2,2,3,3,0]
+  ~~dp[i]3, dp[j]=3
+ --a[1,1,1,2,2,3,4,0]
+MaxAns is change from 3 to 4
+##b[1,1,1,2,2,3,4,0]
+##a[1,1,1,2,2,3,4,1]
+  --b[1,1,1,2,2,3,4,1]
+  ~~dp[i]1, dp[j]=1
+ --a[1,1,1,2,2,3,4,2]
+  --b[1,1,1,2,2,3,4,2]
+  ~~dp[i]2, dp[j]=1
+ --a[1,1,1,2,2,3,4,2]
+  --b[1,1,1,2,2,3,4,2]
+  ~~dp[i]2, dp[j]=1
+ --a[1,1,1,2,2,3,4,2]
+  --b[1,1,1,2,2,3,4,2]
+  ~~dp[i]2, dp[j]=2
+ --a[1,1,1,2,2,3,4,3]
+  --b[1,1,1,2,2,3,4,3]
+  ~~dp[i]3, dp[j]=2
+ --a[1,1,1,2,2,3,4,3]
+  --b[1,1,1,2,2,3,4,3]
+  ~~dp[i]3, dp[j]=3
+ --a[1,1,1,2,2,3,4,4]
+MaxAns is change from 4 to 4
+ */
+```
