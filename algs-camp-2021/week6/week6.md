@@ -57,7 +57,108 @@ f(3) = 3
 ### 673. 最长递增子序列的个数
 ```java
 // 673. 最长递增子序列的个数
+class Solution {
+    public int findNumberOfLIS(int[] nums) {
+        int n  = nums.length, maxLen = 0, ans = 0;
+        int[] dp = new int[n];
+        int[] count = new int[n];
+        for(int i = 0; i < n; i++) {
+            dp[i] = 1;
+            count[i] = 1;
+            dispArr(dp, "#dp=");
+            dispArr(count, "#count=");
+            for(int j = 0; j <n; j++) {
+                if(nums[i] > nums[j]) {
+                    System.out.println("  nums[i]="+nums[i]+", nums[j]="+ nums[j]);
+                    System.out.println("  dp[i] ="+dp[i] +", dp[j]"+ dp[j]);
+                    if(dp[j] + 1 > dp[i]) {
+                        dp[i] = dp[j] + 1;
+                        count[i] = count[j];
+                        dispArr(dp, "    *dp=");
+                        dispArr(count, "    *count=");
+                    } else if(dp[j] + 1 == dp[i]) {
+                        count[i] += count[j];
+                        dispArr(dp, "    ^dp=");
+                        dispArr(count, "    ^count=");
+                    }
+                }
+            }
+            int maxLenTemp =  maxLen;
+            if (dp[i] > maxLen) {
+                maxLen = dp[i];
+                ans = count[i];
+                System.out.print("MaxLen is set from " + maxLenTemp +" to "+ maxLen +". ans=count["+i+"]=" +count[i]);
+            } else if (dp[i] == maxLen) {
+                ans += count[i];
+                System.out.print("ans=count["+i+"]=" +count[i]);
+            }
+        }
+        return ans;
+    }
+    private void dispArr(int [] nums, String preffix) {
+        System.out.print(preffix+"[");
+        for(int i = 0; i< nums.length-1; i++) {
+            System.out.print(nums[i]+",");
+        }
 
+        System.out.println(nums[nums.length-1] + "]");
+    }
+}
+/*
+[1,3,5,4,7]
+
+dp count status log:
+
+#dp=[1,0,0,0,0]
+#count=[1,0,0,0,0]
+MaxLen is set from 0 to 1. ans=count[0]=1#dp=[1,1,0,0,0]
+#count=[1,1,0,0,0]
+  nums[i]=3, nums[j]=1
+  dp[i] =1, dp[j]1
+    *dp=[1,2,0,0,0]
+    *count=[1,1,0,0,0]
+MaxLen is set from 1 to 2. ans=count[1]=1#dp=[1,2,1,0,0]
+#count=[1,1,1,0,0]
+  nums[i]=5, nums[j]=1
+  dp[i] =1, dp[j]1
+    *dp=[1,2,2,0,0]
+    *count=[1,1,1,0,0]
+  nums[i]=5, nums[j]=3
+  dp[i] =2, dp[j]2
+    *dp=[1,2,3,0,0]
+    *count=[1,1,1,0,0]
+  nums[i]=5, nums[j]=4
+  dp[i] =3, dp[j]0
+MaxLen is set from 2 to 3. ans=count[2]=1#dp=[1,2,3,1,0]
+#count=[1,1,1,1,0]
+  nums[i]=4, nums[j]=1
+  dp[i] =1, dp[j]1
+    *dp=[1,2,3,2,0]
+    *count=[1,1,1,1,0]
+  nums[i]=4, nums[j]=3
+  dp[i] =2, dp[j]2
+    *dp=[1,2,3,3,0]
+    *count=[1,1,1,1,0]
+ans=count[3]=1#dp=[1,2,3,3,1]
+#count=[1,1,1,1,1]
+  nums[i]=7, nums[j]=1
+  dp[i] =1, dp[j]1
+    *dp=[1,2,3,3,2]
+    *count=[1,1,1,1,1]
+  nums[i]=7, nums[j]=3
+  dp[i] =2, dp[j]2
+    *dp=[1,2,3,3,3]
+    *count=[1,1,1,1,1]
+  nums[i]=7, nums[j]=5
+  dp[i] =3, dp[j]3
+    *dp=[1,2,3,3,4]
+    *count=[1,1,1,1,1]
+  nums[i]=7, nums[j]=4
+  dp[i] =4, dp[j]3
+    ^dp=[1,2,3,3,4]
+    ^count=[1,1,1,1,2]
+MaxLen is set from 3 to 4. ans=count[4]=2
+ */
 ```
 
 ## exmaple
