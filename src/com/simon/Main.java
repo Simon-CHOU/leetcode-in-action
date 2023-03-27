@@ -1,40 +1,45 @@
 package com.simon;
 
-import com.simon.util.*;
+import com.simon.util.DisplayArrayUtil;
 
-import java.math.BigInteger;
-import java.util.*;
-import java.util.LinkedList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
 
 public class Main {
     private static Solution solution = new Solution();
 
     public static void main(String[] args) {
-//        while (true) {
-        String[] arr = new String[]{"623986800", "3", "887298", "695", "794", "6888794705", "269409", "59930972", "723091307", "726368", "8028385786", "378585"};
-        int k = 11;
-        String kth = solution.kthLargestNumber(arr, k);
-        System.out.println(kth);
-//        }
+        int[] arr = new int[]{3, 2, 1};
+        int k = 2;
+        int[] res = solution.getLeastNumbers(arr, k);
+        DisplayArrayUtil.disp(res);
     }
 }
 
 class Solution {
-    public String kthLargestNumber(String[] nums, int k) {
-        //  自定义比较函数，在 s1 对应的整数较大时返回 -1，反之返回 1
-        Arrays.sort(nums, (x, y) -> {
-            int xLen = x.length();
-            int yLen = y.length();
-            if (xLen != yLen) {
-                return yLen - xLen; // 首先比较字符串长度
-            }
-            return y.compareTo(x);// 长度相等时比较字符串字典序大小
-        });
-        return nums[k - 1];
-    }
+    //  剑指 Offer 40. 最小的k个数
+    //https://leetcode.cn/problems/zui-xiao-de-kge-shu-lcof/
+    public int[] getLeastNumbers(int[] arr, int k) {
+        int[] vec = new int[k];
+        if (k == 0) {
+            return vec;
+        }
+        PriorityQueue<Integer> queue = new PriorityQueue<>(k, (num1, num2) -> num2 - num1); //大根堆
+        // 堆顶最大，出队出来的是最大值
 
-    public String kthLargestNumber1(String[] nums, int k) {
-        Arrays.sort(nums, (o1, o2) -> o2.length() - o1.length() == 0 ? o2.compareTo(o1) : o2.length() - o1.length());
-        return nums[k - 1];
+        for (int i = 0; i < k; i++) {
+            queue.offer(arr[i]);
+        }
+        for (int i = k; i < arr.length; ++i) {
+            if (queue.peek() > arr[i]) { // 堆顶更大，说明堆顶元素不可能是最小的"k"个数之一
+                queue.poll();
+                queue.offer(arr[i]);
+            }
+        }
+        // 至此，堆维护完成
+        for (int i = 0; i < k; ++i) {
+            vec[i] = queue.poll();
+        }
+        return vec;
     }
 }
