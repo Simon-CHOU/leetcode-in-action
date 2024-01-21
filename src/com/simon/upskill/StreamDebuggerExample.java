@@ -9,6 +9,11 @@ import java.util.stream.IntStream;
  * <a href="https://www.youtube.com/watch?v=BeJu9bMPLGU">IntelliJ IDEA Pro Tips: Debugging Java Streams</a>
  */
 public class StreamDebuggerExample {
+    /**
+     * 该Java函数用于将整数分解成质因数，生成一个整数流返回。它通过循环找到并添加所有因数到列表，同时逐步缩小原数值，最后将列表转换为整数流输出。
+     * @param value
+     * @return
+     */
     private static IntStream factorize(int value) {
         List<Integer> factors = new ArrayList<>();
         for (int i = 2; i <= value; i++) {
