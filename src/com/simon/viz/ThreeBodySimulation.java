@@ -3,6 +3,9 @@ package com.simon.viz;
 import javax.swing.*;
 import java.awt.*;
 
+import javax.swing.*;
+import java.awt.*;
+
 public class ThreeBodySimulation extends JFrame {
 
     public ThreeBodySimulation() {

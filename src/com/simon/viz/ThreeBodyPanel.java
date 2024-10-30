@@ -7,13 +7,14 @@ import java.util.List;
 
 class ThreeBodyPanel extends JPanel {
 
-    private List<Planet> planets = new ArrayList<>();
-    private List<Point> trajectories = new ArrayList<>();
+    private final double G = 6.67430e-11; // 万有引力常量
+    private  java.util.List<Planet> planets = new ArrayList<>();
+    private java.util.List<Point> trajectories = new ArrayList<>();
 
     public ThreeBodyPanel() {
-        planets.add(new Planet(100, 300, 5, Color.RED));
-        planets.add(new Planet(400, 300, 5, Color.GREEN));
-        planets.add(new Planet(700, 300, 5, Color.BLUE));
+        planets.add(new Planet(100, 300, 5, Color.RED, 1e10));
+        planets.add(new Planet(400, 300, 5, Color.GREEN, 1e10));
+        planets.add(new Planet(700, 300, 5, Color.BLUE, 1e10));
 
         Timer timer = new Timer(16, e -> {
             updatePositions();
@@ -37,23 +38,27 @@ class ThreeBodyPanel extends JPanel {
         // 绘制星球
         for (Planet planet : planets) {
             g2d.setColor(planet.color);
-            g2d.fillOval(planet.x - planet.radius, planet.y - planet.radius, planet.radius * 2, planet.radius * 2);
+            g2d.fillOval((int) (planet.x - planet.radius), (int) (planet.y - planet.radius), planet.radius * 2, planet.radius * 2);
         }
     }
 
     private void updatePositions() {
         for (Planet planet : planets) {
-            // 简化的运动逻辑，实际应考虑引力作用
-            planet.x += planet.vx;
-            planet.y += planet.vy;
+            planet.calculateForces(planets);
+        }
 
-            // 记录轨迹
-            trajectories.add(new Point(planet.x, planet.y));
+        for (Planet planet : planets) {
+            planet.updatePosition();
+        }
 
-            // 限制轨迹数量
-            if (trajectories.size() > 1000) {
-                trajectories.remove(0);
-            }
+        // 记录轨迹
+        for (Planet planet : planets) {
+            trajectories.add(new Point((int) planet.x, (int) planet.y));
+        }
+
+        // 限制轨迹数量
+        if (trajectories.size() > 1000) {
+            trajectories.remove(0);
         }
     }
 }
