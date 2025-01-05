@@ -14,6 +14,12 @@ class TreeNode {
     TreeNode(int x) {
         val = x;
     }
+
+    TreeNode(int val, TreeNode left, TreeNode right) {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
 }
 
 class RightSideView {
@@ -48,12 +54,23 @@ public class BTreeRightSizeView {
 //        给定一个二叉树的 根节点 root，想象自己站在它的右侧，按照从顶部到底部的顺序，返
 //        回从右侧所能看到的节点值。
         //https://leetcode.cn/problems/binary-tree-right-side-view/
-        TreeNode root = new TreeNode(1);
-        root.left = new TreeNode(2);
-        root.right = new TreeNode(3);
-        root.left.right = new TreeNode(5);
-        root.right.right = new TreeNode(4);
+//        TreeNode root = new TreeNode(1);
+//        root.left = new TreeNode(2);
+//        root.right = new TreeNode(3);
+//        root.left.right = new TreeNode(5);
+//        root.right.right = new TreeNode(4);
+        TreeNode root = new TreeNode(1,
+                new TreeNode(2,
+                        null,
+                        new TreeNode(5)
+                ),
+                new TreeNode(3,
+                        null,
+                        new TreeNode(4)
+                )
+        );
+        // [1,2,3,null,5,null,4]
         List<Integer> result = RightSideView.rightSideView(root);
-        System.out.println(result);
+        System.out.println(result); // 1, 3,4
     }
 }
