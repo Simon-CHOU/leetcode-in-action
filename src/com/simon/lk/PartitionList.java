@@ -16,22 +16,22 @@ import com.simon.util.ListNode;
 class Solution86 { // 86. 分隔链表 https://leetcode.cn/problems/partition-list/description/
     public ListNode partition(ListNode head, int x) {
         ListNode small = new ListNode(0);
-        ListNode smallHeader = small;
+        ListNode smallHeader = small; // 不是next
         ListNode large = new ListNode(0);
-        ListNode largeHeader = large;
+        ListNode largeHeader = large; // 创建哑结点
         while (head != null) {
             if (head.val < x) {
                 small.next = head;
                 small = small.next;
             } else {
-                large.next = head;
+                large.next = head;// =head 不是  = big
                 large = large.next;
             }
             head = head.next;
         }
         large.next = null;
-        small.next = largeHeader.next;
-        return smallHeader.next;
+        small.next = largeHeader.next; // .next 而不是 bigHead自身
+        return smallHeader.next; // .next 而不是
     }
 }
 
@@ -48,7 +48,7 @@ public class PartitionList {
         int x = 3;
 
         Solution86 solution86 = new Solution86();
-        ListNode newHead =  solution86.partition(head, 3);
+        ListNode newHead =  solution86.partition(head, x);
 
 //        while (head != null) {
 //            System.out.print(head.val+" ");
