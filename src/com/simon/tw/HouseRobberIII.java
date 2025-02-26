@@ -16,7 +16,7 @@ class Solution337 {
         int[] left = dfs(root.left);
         int[] right = dfs(root.right);
         int rob = left[1] + right[1] + root.val;
-        int notRob = Math.max(left[0], right[0]) + Math.max(left[1], right[0]);
+        int notRob = Math.max(left[0], left[1]) + Math.max(right[1], right[0]);
 
         return new int[]{rob, notRob};
     }
