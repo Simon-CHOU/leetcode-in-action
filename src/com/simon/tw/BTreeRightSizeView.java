@@ -1,26 +1,28 @@
 package com.simon.tw;
 
+import com.simon.util.TreeNode;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 // 定义二叉树节点类
-class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
-
-    TreeNode(int x) {
-        val = x;
-    }
-
-    TreeNode(int val, TreeNode left, TreeNode right) {
-        this.val = val;
-        this.left = left;
-        this.right = right;
-    }
-}
+//class TreeNode {
+//    int val;
+//    TreeNode left;
+//    TreeNode right;
+//
+//    TreeNode(int x) {
+//        val = x;
+//    }
+//
+//    TreeNode(int val, TreeNode left, TreeNode right) {
+//        this.val = val;
+//        this.left = left;
+//        this.right = right;
+//    }
+//}
 
 class RightSideView {
     public static List<Integer> rightSideView(TreeNode root) {
