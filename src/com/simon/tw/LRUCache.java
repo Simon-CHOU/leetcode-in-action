@@ -1,81 +1,94 @@
 package com.simon.tw;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.Iterator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LRUCache {
-    Deque<int[]> a = new ArrayDeque<>();
-    int limit;
+    class Node {
+        int key;
+        int value;
+        Node prev;
+        Node next;
+
+        public Node(int key, int value) {
+            this.key = key;
+            this.value = value;
+        }
+    }
+
+    private Map<Integer, Node> cache;
+    private int capacity;
+    private Node head;
+    private Node tail;
+
 
     public LRUCache(int capacity) {
-        this.limit = capacity;
+        this.capacity = capacity;
+        cache = new HashMap<>();
+        head = new Node(0,0);
+        tail = new Node(0, 0);
+        head.next =tail;
+        tail.prev = head; // 头尾相接
+
     }
 
     public int get(int key) {
-        if(contains( key) ){
-           //放到顶
-            int[] tmp = remove(key);
-            a.push(tmp);
-            // return key; // 这里错啦，应该返回的是value，缓存存的是键值对。
-            return tmp[1];
-        }else {
+        Node node = cache.get(key);
+        if(node == null) {
             return -1;
         }
+        moveToHead(node);
+        return node.value;
     }
 
     public void put(int key, int value) {
-        if(contains(key) ){
-            //放到顶
-            remove(key);
-            a.push(new int[]{key, value});
-        }else {
-            a.push(new int[]{key, value});
-        }
-        if(a.size()>limit) {
-            a.pollLast();
-        }
+       Node node =cache.get(key);
+       if(node != null) {
+          node.value = value;
+          moveToHead(node);
+       } else {
+           Node newNode = new Node(key, value);// 创建新节点，删除原结点
+           cache.put(key, newNode);
+           addToHead(newNode);
+           if(cache.size() > capacity) {
+               Node last = removeTail();
+               cache.remove(last.key);
+           }
+       }
     }
 
-    // 包装方法，处理 int[]{} 作为键值对，保存在
-    private boolean contains( int x){
-        for(int[] arr : a ){
-            if(x == arr[0]) return true;
-        }
-        return false;
+    private void moveToHead(Node node) {
+        removeNode(node);
+        addToHead(node);
     }
-    private int[] remove(int key) {
-        Iterator<int[]> iterator = a.iterator();
-        while(iterator.hasNext()) {
-            int[] cur = iterator.next();
-            if(cur[0] == key) {
-                iterator.remove();
-                return cur;
-            }
-        }
-        return new int[]{0,0};
+    private void removeNode(Node node) {
+        node.prev.next = node.next;
+        node.next.prev = node.prev;
+    }
+    private void addToHead(Node node) {
+        node.next = head.next;
+        node.prev = head;
+        head.next.prev = node;
+        head.next =node;
+    }
+    private Node removeTail() {
+        Node last = tail.prev;
+        removeNode(last);
+        return last;
     }
 
 
     public static void main(String[] args) {
-//        LRUCache lRUCache = new LRUCache(2);
-//        lRUCache.put(1, 1); // 缓存是 {1=1}
-//        lRUCache.put(2, 2); // 缓存是 {1=1, 2=2}
-//        System.out.println(lRUCache.get(1));    // 返回 1
-//        lRUCache.put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
-//        System.out.println(lRUCache.get(2));    // 返回 -1 (未找到)
-//        lRUCache.put(4, 4); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}
-//        System.out.println(lRUCache.get(1));    // 返回 -1 (未找到)
-//        System.out.println(lRUCache.get(3));    // 返回 3
-//        System.out.println(lRUCache.get(4));    // 返回 4
+        LRUCache lRUCache = new LRUCache(2);
+        lRUCache.put(1, 1); // 缓存是 {1=1}
+        lRUCache.put(2, 2); // 缓存是 {1=1, 2=2}
+        System.out.println(lRUCache.get(1));    // 返回 1
+        lRUCache.put(3, 3); // 该操作会使得关键字 2 作废，缓存是 {1=1, 3=3}
+        System.out.println(lRUCache.get(2));    // 返回 -1 (未找到)
+        lRUCache.put(4, 4); // 该操作会使得关键字 1 作废，缓存是 {4=4, 3=3}
+        System.out.println(lRUCache.get(1));    // 返回 -1 (未找到)
+        System.out.println(lRUCache.get(3));    // 返回 3
+        System.out.println(lRUCache.get(4));    // 返回 4
 
-//        ["LRUCache","put","get"]
-//[[1],[2,1],[2]]
-//        exp
-//                [null,null,1]
-        LRUCache lRUCache = new LRUCache(1);
-        lRUCache.put(2, 1);
-        System.out.println(lRUCache.get(2)); // 返回1
-        //
     }
 }
