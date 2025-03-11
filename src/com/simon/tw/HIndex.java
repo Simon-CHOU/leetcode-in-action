@@ -1,7 +1,60 @@
 package com.simon.tw;
 
+import java.util.Arrays;
+
 class Solution274 {
-    public int hIndex(int[] citations) { // 20250311 自解
+    public int hIndex(int[] citations) {// 二分。
+        int left = 0, right = citations.length;
+        int mid = 0, cnt = 0;
+        while (left < right) {
+            mid = (left + right + 1) >>> 1;
+            cnt = 0;
+            for (int i = 0; i < citations.length; i++) {
+                if (citations[i] >= mid) {
+                    cnt++;
+                }
+            }
+            if (cnt >= mid) {
+                left = mid;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return left;
+    }
+
+    public int hIndexCountSort(int[] citations) {//https://leetcode.cn/problems/h-index/solutions/869042/h-zhi-shu-by-leetcode-solution-fnhl/
+        int n = citations.length, tot = 0;
+        int[] counter = new int[n + 1];
+        for (int i = 0; i < n; i++) {
+            if (citations[i] >= n) {
+                counter[n]++;
+            } else {
+                counter[citations[i]]++; // 重叠起来用数组很常见。也很打脑壳。
+            }
+        }
+        for (int i = n; i >= 0; i--) {
+            tot += counter[i];
+            if (tot >= i) {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    public int hIndexSort(int[] citations) {
+        Arrays.sort(citations);
+        int h = 0, len = citations.length - 1;
+        while (len >= 0 && citations[len] > h) {
+            h++;
+            len--;
+        }
+        // 定义 至少 有 h 篇论文被引用次数大于等于 h
+        // 定义 len=4, citations[4]=6 > 0
+        return h;
+    }
+
+    public int hIndexSelf(int[] citations) { // 20250311 自解
 
 //        int min = Integer.MAX_VALUE;
 //        int max = 0;
@@ -43,7 +96,7 @@ public class HIndex {
         System.out.println(solution274.hIndex(arr)); // exp 3
 
 
-        System.out.println(solution274.hIndex(new int[]{1,3,1})); // exp 1
+        System.out.println(solution274.hIndex(new int[]{1, 3, 1})); // exp 1
         System.out.println(solution274.hIndex(new int[]{0})); // exp 1
     }
 }
