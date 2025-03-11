@@ -3,7 +3,24 @@ package com.simon.tw;
 import java.util.Arrays;
 
 class Solution274 {
-    public int hIndex(int[] citations) {// 二分。
+
+    //https://leetcode.cn/problems/h-index/solutions/2502837/mei-kan-dong-ti-yi-yi-zhang-tu-miao-dong-8zps/
+    public int hIndex(int[] citations) {
+        int n = citations.length;
+        int[] cnt = new int[n + 1]; // 计数数组，排除0
+        for (int c : citations) {
+            cnt[Math.min(c, n)]++;  // 将引用次数超过n的论文统一记录在cnt[n]
+        } // 初始化计数数组
+        int s = 0;
+        for (int i = n; ; i--) {
+            s += cnt[i]; //cnt比原数组多一位，所以刚进来 i=n 不会越界
+            if (s >= i) {
+                return i;
+            }
+        }
+    }
+
+    public int hIndex2Div(int[] citations) {// 二分。
         int left = 0, right = citations.length;
         int mid = 0, cnt = 0;
         while (left < right) {
