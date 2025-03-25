@@ -26,19 +26,20 @@ class Solution234 {
         //判断是否正确
         ListNode p = head; //node;
         ListNode q = node2;
+        boolean result = true;
 //        while(p.next!=null && q.next!=null) {
-        while(q!=null) {
+        while(result && q!=null) {
             //这里的 while 循环条件应该是 q != null，而不是 q.next != null。原因如下：
             //
             //q 是反转后的后半部分链表的头。如果后半部分链表只有一个节点（如例子中的 1->2，反转后半部分后，q 指向 2），q.next 就已经是 null 了。你的循环条件会导致直接跳过比较。
             //比较应该持续到 q 的末尾。 q 代表的是后半部分，我们需要完整地比较后半部分和前半部分。
-            if(p.val != q.val) return false; // 如果要还原，则不能直接退出，
+            if(p.val != q.val) result = false; // 如果要还原，则不能直接退出，
             p = p.next;
             q = q.next; // 别忘了步进
         }
         // 还原链表？只是为了判断出结果，甚至可以不用还原？
 
-        return  true;
+        return  result;
     }
 
     ListNode getHalfHead(ListNode head){
