@@ -67,5 +67,15 @@ public class ImplementQueueUsingStacksLcci {
         System.out.println(queue.peek());  // 返回 1
         System.out.println(queue.pop());   // 返回 1
         System.out.println(queue.empty()); // 返回 false
+        System.out.println("00000000");
+        //["MyQueue","push","push","peek","push","peek"]
+        //[[],[1],[2],[],[3],[]] // 用例可以测试判空
+        MyQueue queue1 = new MyQueue();
+        queue1.push(1);
+        queue1.push(2);
+        System.out.println(queue1.peek()); // 1
+        queue1.push(3);
+        System.out.println(queue1.peek()); // 1
+
     }
 }
