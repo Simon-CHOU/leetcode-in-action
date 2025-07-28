@@ -11,7 +11,7 @@ public class MaxVowelsTDD {
 
     /**
      * 找出字符串中长度为k的子串中包含的最大元音字母数量
-     * 
+     *
      * <p>核心知识点分层：</p>
      * <ol>
      *   <li><b>Java语言基础</b>
@@ -48,7 +48,7 @@ public class MaxVowelsTDD {
      *     </ul>
      *   </li>
      * </ol>
-     * 
+     *
      * <p>算法流程：</p>
      * <ol>
      *   <li>初始化窗口：计算字符串前k个字符中元音的数量</li>
@@ -61,61 +61,43 @@ public class MaxVowelsTDD {
      *   </li>
      *   <li>返回记录的最大元音数量</li>
      * </ol>
-     * 
+     *
      * @param s 输入字符串
      * @param k 子串长度
      * @return 最大元音字母数量
      */
+
     public int maxVowels(String s, int k) {
-        if (s == null || s.length() < k) {
-            return 0;
-        }
+        if (s == null || s.length() == 0 || k <= 0) return 0;
 
         int maxCount = 0;
-        int currentCount = 0;
+        int vowelCount = 0;
 
-        // 计算第一个窗口中的元音数量
+        // 初始化首个窗口
         for (int i = 0; i < k; i++) {
             if (isVowel(s.charAt(i))) {
-                currentCount++;
+                vowelCount++;
             }
         }
-        maxCount = currentCount;
+        maxCount = vowelCount;
 
-        // 使用滑动窗口更新最大元音数量
-        for (int i = k; i < s.length(); i++) {
-            // 移除窗口左边的字符（如果它是元音）
-            // 为什么是 i-k ?
-            // 窗口长度为k，当右边界索引为i时，左边界索引为 i-k
-            // 例如：k=3, 当前窗口右端在索引5(i=5)，那么左端在索引2(i-k = 5-3 = 2)
-            //      字符串: a b c i i i d e f
-            //      索引:   0 1 2 3 4 5 6 7 8
-            //                        ^   ^
-            //                        |   |
-            //                     左端  右端
-            //                     i-k    i
-            if (isVowel(s.charAt(i - k))) {
-                currentCount--;
+        // 滑动窗口
+        for (int left = 0, right = k; right < s.length(); left++, right++) {
+            // 旧左出
+            if (isVowel(s.charAt(left))) {
+                vowelCount--;
             }
-            // 添加窗口右边的新字符（如果它是元音）
-            if (isVowel(s.charAt(i))) {
-                currentCount++;
+            // 新右进
+            if (isVowel(s.charAt(right))) {
+                vowelCount++;
             }
-            // 更新最大值
-            maxCount = Math.max(maxCount, currentCount);
+            maxCount = Math.max(maxCount, vowelCount);
         }
-
         return maxCount;
     }
 
-    /**
-     * 判断字符是否为元音字母
-     * 
-     * @param c 待判断字符
-     * @return 如果是元音字母返回true，否则返回false
-     */
     private boolean isVowel(char c) {
-        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u';
+        return "aeiou".indexOf(c) != -1;
     }
 
     // 测试用例
