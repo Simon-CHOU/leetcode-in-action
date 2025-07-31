@@ -25,7 +25,7 @@ public class KRadiusSubarrayAveragesTDD {
         }
         
         // 使用滑动窗口计算平均值
-        long windowSum = 0;
+        long windowSum = 0; //凭什么知道这里用long，不用Int?
         int windowSize = 2 * k + 1;
         
         // 计算初始窗口的和
