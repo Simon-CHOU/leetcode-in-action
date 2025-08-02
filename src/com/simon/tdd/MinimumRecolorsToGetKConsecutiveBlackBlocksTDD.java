@@ -33,6 +33,7 @@ public class MinimumRecolorsToGetKConsecutiveBlackBlocksTDD {
     }
     /* ---------- 自包含的 main 测试 ---------- */
     public static void main(String[] args) {
+        test("WWBBBWBBBBBWWBWWWB", 16, 6);
         test("WBWBBWWWB", 3, 1);
         test("BBBBB", 5, 0);
         test("W", 1, 1);
