@@ -1,45 +1,59 @@
 package com.simon.tdd;
 
-import java.util.HashMap;
-
 public class MaximumSumOfDistinctSubarraysWithLengthKTDD {
 
-
-
-    public long maximumSubarraySum(int[] nums, int k) { //20250804 self
-
+    public long maximumSubarraySum(int[] nums, int k) {
         long maxSum = 0;
         long curSum = 0;
+        int n = nums.length;
+        
+        // 使用数组代替HashMap来提高性能，假设数值范围不会太大
+        // 这里使用一个足够大的数组来模拟哈希表
+        int[] count = new int[100001]; // 根据题目数据范围调整
+        int distinct = 0; // 记录当前窗口中不同元素的个数
 
-        // 各不相同 k = hash.size();
-        HashMap<Long, Integer> cmap = new HashMap<>();
-
+        // 初始化第一个窗口
         for (int i = 0; i < k; i++) {
-            long n = nums[i];
-            curSum += n;
-            cmap.put(n, cmap.getOrDefault(n, 0) + 1);
+            int num = nums[i];
+            curSum += num;
+            if (count[num] == 0) {
+                distinct++;
+            }
+            count[num]++;
         }
-        if (cmap.size() == k) { // 我一共只放了k个元素，cmap.size() <= k 恒为真，所以不必考虑更复杂的“各不相同”的算法
+
+        // 如果第一个窗口满足条件（所有元素都不相同）
+        if (distinct == k) {
             maxSum = curSum;
         }
 
-        for (int i = k; i < nums.length; i++) {
-            long left = nums[i - k];
-            long right = nums[i];
+        // 滑动窗口
+        for (int i = k; i < n; i++) {
+            int left = nums[i - k];  // 要移出窗口的元素
+            int right = nums[i];     // 要加入窗口的元素
+            
+            // 更新当前窗口和
             curSum = curSum - left + right;
-            cmap.put(left, cmap.get(left) - 1);
-            if (cmap.get(left) == 0) {
-                cmap.remove(left);
+
+            // 移除左侧元素
+            count[left]--;
+            if (count[left] == 0) {
+                distinct--;
             }
 
-            cmap.put(right, cmap.getOrDefault(right, 0) + 1); // 右侧可能有新值，新值第一次添加到map必须要0值，故用getOrDefault
-            if (cmap.size() == k) {
+            // 添加右侧元素
+            if (count[right] == 0) {
+                distinct++;
+            }
+            count[right]++;
+
+            // 如果当前窗口满足条件（所有元素都不相同）
+            if (distinct == k) {
                 maxSum = Math.max(maxSum, curSum);
             }
         }
 
         return maxSum;
-
     }
 
     public static void main(String[] args) {
