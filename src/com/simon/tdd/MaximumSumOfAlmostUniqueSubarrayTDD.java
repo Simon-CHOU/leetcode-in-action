@@ -26,57 +26,61 @@ public class MaximumSumOfAlmostUniqueSubarrayTDD {
      * @return 满足条件的子数组的最大和，如果不存在满足条件的子数组则返回0
      */
     public long maxSum(List<Integer> nums, int m, int k) {
-        int n = nums.size();
-        long maxSum = 0;
-        long windowSum = 0;
-        
-        // 使用HashMap记录窗口内每个元素的出现次数
-        Map<Integer, Integer> elementCount = new HashMap<>();
-        
-        // 初始化第一个窗口
+//20250803( 补) self recall
+        long curSum = 0L;
+        long maxSum = 0L;
+
+        HashMap<Long, Integer> eleMap = new HashMap<>();
+
         for (int i = 0; i < k; i++) {
-            int num = nums.get(i);
-            windowSum += num;
-            elementCount.put(num, elementCount.getOrDefault(num, 0) + 1);
+            long n = nums.get(i);
+            eleMap.put(n, eleMap.getOrDefault(n, 0) + 1);
+            curSum += n;
         }
-        
-        // 检查第一个窗口是否满足条件
-        if (elementCount.size() >= m) { // nums 的一个子数组有至少 m 个互不相同的元素
-            maxSum = windowSum;
+
+        if (eleMap.size() >= m) { //如果 nums 的一个子数组有至少 m 个互不相同的元素，！等于也是
+            maxSum = curSum;
         }
-        
-        // 滑动窗口，从第k个元素开始
-        for (int i = k; i < n; i++) {
-            // 添加新元素到窗口
-            int newElement = nums.get(i);
-            windowSum += newElement;
-            elementCount.put(newElement, elementCount.getOrDefault(newElement, 0) + 1);
-            
-            // 移除窗口左侧的旧元素
-            int oldElement = nums.get(i - k);
-            windowSum -= oldElement;
-            elementCount.put(oldElement, elementCount.get(oldElement) - 1); // 这里为什么不用getOrDefault？因为必然有值，左边的值是在前面的循环中我们亲手加进去的
-            
-            // 如果某个元素计数为0，则从哈希表中移除
-            if (elementCount.get(oldElement) == 0) {
-                elementCount.remove(oldElement);
+
+        for (int i = k; i < nums.size(); i++) {
+
+            long left = nums.get(i - k);
+            eleMap.put(left, eleMap.get(left) - 1);
+            if (eleMap.get(left) == 0) { //如果某个元素个数变为0，则从哈希表中删除该元素，避免size()统计到计数为0的元素
+                eleMap.remove(left);
             }
-            
-            // 检查当前窗口是否满足条件
-            if (elementCount.size() >= m) {
-                maxSum = Math.max(maxSum, windowSum);
+            curSum -= left;
+
+            long right = nums.get(i);
+            eleMap.put(right, eleMap.getOrDefault(right, 0) + 1);
+            curSum += right;
+
+            if (eleMap.size() >= m) {
+                maxSum = Math.max(maxSum, curSum);
             }
+
         }
-        
+
         return maxSum;
     }
-
     /**
      * 测试方法
      */
     public static void main(String[] args) {
         MaximumSumOfAlmostUniqueSubarrayTDD solution = new MaximumSumOfAlmostUniqueSubarrayTDD();
-        
+        // 测试用例0
+        // 输入: nums = [1], m = 1, k = 1
+        // 输出: 1
+        List<Integer> nums0 = List.of(1);
+        long result0 = solution.maxSum(nums0, 1, 1);
+        long expected0 = 1;
+        System.out.println("测试用例0结果: " +  result0+ ", 期望: " + expected0);
+        if (result0 == expected0) {
+            System.out.println("测试用例0: 通过");
+        } else {
+            System.out.println("测试用例0: 失败");
+        }
+
         // 测试用例1
         // 输入: nums = [2,6,7,3,1,7], m = 3, k = 4
         // 输出: 18
@@ -127,6 +131,33 @@ public class MaximumSumOfAlmostUniqueSubarrayTDD {
             System.out.println("测试用例4: 通过");
         } else {
             System.out.println("测试用例4: 失败");
+        }
+
+        // 测试用例5
+        // 输入: nums = [1,2,2], m = 2, k = 2
+        // 输出: 3
+        List<Integer> nums5 = List.of(1, 2, 2);
+        long result5 = solution.maxSum(nums5, 2, 2);
+        long expected5 = 3;
+        System.out.println("测试用例5结果: " + result5 + ", 期望: " + expected5);
+        if (result5 == expected5) {
+            System.out.println("测试用例5: 通过");
+        } else {
+            System.out.println("测试用例5: 失败");
+        }
+
+        // 测试用例6
+        // 输入: nums = [996021492,996021492,973489433,66259330,554129007,713784351,646092981,328987029,469368828,685679486,66259330,165954500,731567840,595800464,552439059,14673238,157622945,521321042,386913607,733723177,330475939,462727944,69696035,958945846,648914457,627088742,363551051,50748590,400980660,674779765,439950964,613843311,385212079,725525766,813504429,385212079,66563232,578031878,935017574,554725813,456892672,245308625,626768145,270964388,554725813,768296675,676923124,939689721,115905765,625193590,717796816,27972217,277242430,768296675,480860474,659230631,570682291,601689140,955632265,767424000,251696645,675750691,767424000,251696645,767424000,675750691,675750691,251696645]
+        // m = 9, k = 8
+        // 输出: 5081057906
+        List<Integer> nums6 = List.of(996021492,996021492,973489433,66259330,554129007,713784351,646092981,328987029,469368828,685679486,66259330,165954500,731567840,595800464,552439059,14673238,157622945,521321042,386913607,733723177,330475939,462727944,69696035,958945846,648914457,627088742,363551051,50748590,400980660,674779765,439950964,613843311,385212079,725525766,813504429,385212079,66563232,578031878,935017574,554725813,456892672,245308625,626768145,270964388,554725813,768296675,676923124,939689721,115905765,625193590,717796816,27972217,277242430,768296675,480860474,659230631,570682291,601689140,955632265,767424000,251696645,675750691,767424000,251696645,767424000,675750691,675750691,251696645);
+        long result6 = solution.maxSum(nums6, 9, 8);
+        long expected6 = 5081057906L;
+        System.out.println("测试用例6结果: " + result6 + ", 期望: " + expected6);
+        if (result6 == expected6) {
+            System.out.println("测试用例6: 通过");
+        } else {
+            System.out.println("测试用例6: 失败");
         }
     }
 }
