@@ -1,55 +1,45 @@
 package com.simon.tdd;
 
+import java.util.Arrays;
+
 public class MaximumPointsYouCanObtainFromCardsTDD {
 
     /**
      * 计算可获得的最大点数
-     * @param cards 卡片数组
+     * @param cardPoints 卡片数组
      * @param k 要取的卡片数量
      * @return 最大点数和
      */
-    public static int maxScore(int[] cards, int k) {
-        int n = cards.length;
-        int totalSum = calculateTotalSum(cards);
+    public static int maxScore(int[] cardPoints, int k) {
+        // 20250817 recall
 
-        // 若取走所有卡片，直接返回总和
-        if (k == n) {
-            return totalSum;
-        }
+        // 计算总和
+        // 计算窗口大小
+        // 初始化窗口只
+        // 滑动窗口找最小和
+        // 返回综合减去最小
 
-        int windowSize = n - k;
-        int currentWindowSum = calculateInitialWindowSum(cards, windowSize);
-        int minWindowSum = currentWindowSum;
+//        int totalAmt = 0;
+//        for (int pt : cardPoints) {
+//            totalAmt += pt;
+//        }
+        int totalAmt = Arrays.stream(cardPoints).sum();
 
-        // 滑动窗口计算最小和
-        for (int i = windowSize; i < n; i++) {
-            currentWindowSum = currentWindowSum - cards[i - windowSize] + cards[i];
-            minWindowSum = Math.min(minWindowSum, currentWindowSum);
-        }
+        int windowSize = cardPoints.length - k;
 
-        return totalSum - minWindowSum;
-    }
 
-    /**
-     * 计算数组总点数
-     */
-    private static int calculateTotalSum(int[] cards) {
-        int sum = 0;
-        for (int card : cards) {
-            sum += card;
-        }
-        return sum;
-    }
-
-    /**
-     * 计算初始窗口（前windowSize个元素）的和
-     */
-    private static int calculateInitialWindowSum(int[] cards, int windowSize) {
-        int sum = 0;
+        int curCount = 0;
         for (int i = 0; i < windowSize; i++) {
-            sum += cards[i];
+            curCount += cardPoints[i];
         }
-        return sum;
+        int windowsSumMin = curCount;
+
+        for (int i = windowSize; i < cardPoints.length; i++) {
+            curCount = curCount - cardPoints[i - windowSize] + cardPoints[i];
+            windowsSumMin = Math.min(windowsSumMin, curCount);
+        }
+        return totalAmt - windowsSumMin;
+
     }
 
     /**
