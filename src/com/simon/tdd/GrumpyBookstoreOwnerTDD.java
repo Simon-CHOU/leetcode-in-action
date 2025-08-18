@@ -29,42 +29,43 @@ public class GrumpyBookstoreOwnerTDD {
      * @return 最大满意顾客数
      */
     public int maxSatisfied(int[] customers, int[] grumpy, int minutes) {
-        // 计算基础满意顾客数（老板不使用技能时的满意顾客）
-        int baseSatisfied = 0;
-        for (int i = 0; i < customers.length; i++) {
-            if (grumpy[i] == 0) {
-                baseSatisfied += customers[i];
+        //20250818 recall
+        // calc power-free
+        // init window
+        // slide window
+        // + extra benifit
+
+        int len = customers.length;
+        int basicNum = 0;
+        for (int i = 0; i < len; i++) {
+            if (grumpy[i] == 0) { // not mad
+                basicNum += customers[i];
             }
         }
-        
-        // 使用滑动窗口找出使用技能能带来的最大额外满意顾客数
+
         int maxExtra;
-        int currentExtra = 0;
-        
-        // 初始化第一个窗口
-        for (int i = 0; i < minutes; i++) {
+        int windowSum = 0;
+        for (int i = 0; i < minutes; i++) { // only mad
             if (grumpy[i] == 1) {
-                currentExtra += customers[i];
+                windowSum += customers[i];
             }
         }
-        maxExtra = currentExtra;
-        
-        // 滑动窗口更新额外满意顾客数
-        for (int i = minutes; i < customers.length; i++) {
-            // 移除窗口左边界的贡献
-            if (grumpy[i - minutes] == 1) {
-                currentExtra -= customers[i - minutes];
+        maxExtra = windowSum;
+
+        for (int i = minutes; i < len; i++) { // only mad
+            int left = i - minutes;
+            int rigth = i;
+            if (grumpy[left] == 1) {
+                windowSum = windowSum - customers[left];
             }
-            // 添加窗口右边界的贡献
-            if (grumpy[i] == 1) {
-                currentExtra += customers[i];
+            if (grumpy[rigth] == 1) {
+                windowSum = windowSum + customers[rigth];
+
             }
-            // 更新最大额外满意顾客数
-            maxExtra = Math.max(maxExtra, currentExtra);
+            maxExtra = Math.max(maxExtra, windowSum);
         }
-        
-        // 返回基础满意顾客数 + 使用技能带来的最大额外满意顾客数
-        return baseSatisfied + maxExtra;
+
+        return basicNum + maxExtra;
     }
     
     /**
