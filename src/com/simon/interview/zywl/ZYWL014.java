@@ -1,83 +1,116 @@
 package com.simon.interview.zywl;
 
 /**
- * LeetCode 287. 寻找重复数
- * <p>
- * 给定一个包含 n + 1 个整数的数组 nums，其数字都在 [1, n] 范围内。
- * 你需要找出数组中重复了的数字。
- * <p>
- * 解法：弗洛伊德环检测算法（Floyd's Cycle Detection Algorithm）
- * 将数组看作链表，数组下标作为节点，数组值作为指向下一个节点的指针。
- * 由于存在重复数字，所以必然存在环，而环的入口就是重复的数字。
- * <p>
- * 算法步骤：
- * 1. 使用快慢指针找到环中的相遇点
- * 2. 将一个指针重置到起点，两个指针以相同速度移动，再次相遇点即为环的入口点
- * <p>
- * 时间复杂度：O(n)
- * 空间复杂度：O(1)
+ * 链表节点定义
  */
+class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}
+
 public class ZYWL014 {
     
     /**
-     * 查找数组中的重复数字
+     * 使用Floyd算法（快慢指针法）检测链表中环的入口节点
      * 
-     * @param nums 输入数组，包含 n+1 个整数，每个整数都在 [1, n] 范围内
-     * @return 返回数组中的重复数字
+     * 算法分为两个阶段：
+     * 1. 使用快慢指针判断链表中是否存在环
+     * 2. 如果存在环，找到环的入口节点
+     * 
+     * 时间复杂度：O(n)，其中n是链表中的节点数
+     * 空间复杂度：O(1)，只使用了常数级别的额外空间
+     * 
+     * @param pHead 链表头节点
+     * @return 环的入口节点，如果不存在环则返回null
      */
-    public static int findDuplicate(int[] nums) {
-        // 第一阶段：使用快慢指针找到环中的相遇点
-        int slow = nums[0];
-        int fast = nums[0];
-        
-        // 移动指针直到相遇
-        do {
-            slow = nums[slow];        // 慢指针走一步
-            fast = nums[nums[fast]];  // 快指针走两步
-        } while (slow != fast);
-        
-        // 第二阶段：找到环的入口点（重复数字）
-        slow = nums[0];  // 重置慢指针到起点
-        
-        // 两个指针以相同速度移动，直到相遇
-        while (slow != fast) {
-            slow = nums[slow];
-            fast = nums[fast];
+    public static ListNode EntryNodeOfLoop(ListNode pHead) {
+        if (pHead == null || pHead.next == null) {
+            return null;
         }
         
-        return slow;  // 返回环的入口点，即重复数字
+        // 第一阶段：使用快慢指针检测环的存在
+        ListNode slow = pHead;
+        ListNode fast = pHead;
+        
+        // 快指针每次走两步，慢指针每次走一步
+        do {
+            // 如果快指针或快指针的下一个节点为null，说明没有环
+            if (fast == null || fast.next == null) {
+                return null;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+        } while (slow != fast);
+        
+        // 第二阶段：找到环的入口
+        // 将快指针重置到链表头部，慢指针保持在相遇点
+        // 两个指针以相同速度移动，再次相遇的点就是环的入口
+        fast = pHead;
+        while (slow != fast) {
+            slow = slow.next;
+            fast = fast.next;
+        }
+        
+        return slow;
     }
     
     /**
-     * 使用主方法进行测试
+     * 测试方法
      */
     public static void main(String[] args) {
-        // 测试用例1: [1,3,4,2,2] -> 期望结果: 2
-        int[] nums1 = {1, 3, 4, 2, 2};
-        int result1 = findDuplicate(nums1);
-        System.out.println("测试用例1:");
-        System.out.println("输入: [1,3,4,2,2]");
-        System.out.println("结果: " + result1 + " (期望: 2) " + (result1 == 2 ? "PASS" : "FAIL"));
+        ZYWL014 solution = new ZYWL014();
         
-        // 测试用例2: [3,1,3,4,2] -> 期望结果: 3
-        int[] nums2 = {3, 1, 3, 4, 2};
-        int result2 = findDuplicate(nums2);
-        System.out.println("测试用例2:");
-        System.out.println("输入: [3,1,3,4,2]");
-        System.out.println("结果: " + result2 + " (期望: 3) " + (result2 == 3 ? "PASS" : "FAIL"));
+        // 测试用例1：没有环的链表
+        ListNode node1 = new ListNode(1);
+        ListNode node2 = new ListNode(2);
+        ListNode node3 = new ListNode(3);
+        ListNode node4 = new ListNode(4);
+        ListNode node5 = new ListNode(5);
         
-        // 测试用例3: [2,2,2,2,2] -> 期望结果: 2
-        int[] nums3 = {2, 2, 2, 2, 2};
-        int result3 = findDuplicate(nums3);
-        System.out.println("测试用例3:");
-        System.out.println("输入: [2,2,2,2,2]");
-        System.out.println("结果: " + result3 + " (期望: 2) " + (result3 == 2 ? "PASS" : "FAIL"));
+        node1.next = node2;
+        node2.next = node3;
+        node3.next = node4;
+        node4.next = node5;
+        // 没有形成环
         
-        // 测试用例4: [1,1] -> 期望结果: 1
-        int[] nums4 = {1, 1};
-        int result4 = findDuplicate(nums4);
-        System.out.println("测试用例4:");
-        System.out.println("输入: [1,1]");
-        System.out.println("结果: " + result4 + " (期望: 1) " + (result4 == 1 ? "PASS" : "FAIL"));
+        ListNode result1 = EntryNodeOfLoop(node1);
+        System.out.println("测试用例1 - 没有环的链表:");
+        System.out.println("结果: " + result1 + " (期望: null) " + (result1 == null ? "PASS" : "FAIL"));
+        
+        // 测试用例2：有环的链表
+        ListNode node6 = new ListNode(1);
+        ListNode node7 = new ListNode(2);
+        ListNode node8 = new ListNode(3);
+        ListNode node9 = new ListNode(4);
+        ListNode node10 = new ListNode(5);
+        
+        node6.next = node7;
+        node7.next = node8;
+        node8.next = node9;
+        node9.next = node10;
+        node10.next = node8; // 形成环，入口是node8(值为3)
+        
+        ListNode result2 = EntryNodeOfLoop(node6);
+        System.out.println("测试用例2 - 有环的链表:");
+        System.out.println("结果: " + (result2 != null ? result2.val : result2) + " (期望: 3) " + 
+                          (result2 != null && result2.val == 3 ? "PASS" : "FAIL"));
+        
+        // 测试用例3：单节点自环
+        ListNode node11 = new ListNode(1);
+        node11.next = node11; // 自环
+        
+        ListNode result3 = EntryNodeOfLoop(node11);
+        System.out.println("测试用例3 - 单节点自环:");
+        System.out.println("结果: " + (result3 != null ? result3.val : result3) + " (期望: 1) " + 
+                          (result3 != null && result3.val == 1 ? "PASS" : "FAIL"));
+        
+        // 测试用例4：空链表
+        ListNode result4 = EntryNodeOfLoop(null);
+        System.out.println("测试用例4 - 空链表:");
+        System.out.println("结果: " + result4 + " (期望: null) " + (result4 == null ? "PASS" : "FAIL"));
     }
 }
