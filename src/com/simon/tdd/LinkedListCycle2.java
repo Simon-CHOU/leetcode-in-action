@@ -51,7 +51,7 @@ public class LinkedListCycle2 {
         } // Q2 找到环的入口为什么还需要在遍历？直接用前文判断hasCycle的循环不行吗？
 
         // 两个指针再次相遇的点就是环的入口
-        return slow;
+        return slow; //Q3 这里为什么返回slow而不是fast?
     }
 
     /**
