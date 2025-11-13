@@ -92,7 +92,7 @@ public class WordBreakTDD {
     // 测试用例5：字典为空
     private static void testCase5() {
         String s = "abc";
-        List<String> wordDict = Arrays.asList();
+        List<String> wordDict = List.of();
         boolean expected = false;
         boolean result = wordBreak(s, wordDict);
         System.out.println("TEST CASE 5: " + (result == expected ? "PASS" : "FAIL"));
@@ -101,7 +101,7 @@ public class WordBreakTDD {
     // 测试用例6：边界情况 - 单个字符
     private static void testCase6() {
         String s = "a";
-        List<String> wordDict = Arrays.asList("a");
+        List<String> wordDict = List.of("a");
         boolean expected = true;
         boolean result = wordBreak(s, wordDict);
         System.out.println("TEST CASE 6: " + (result == expected ? "PASS" : "FAIL"));
