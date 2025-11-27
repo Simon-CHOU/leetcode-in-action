@@ -106,6 +106,10 @@ public class TargetSumTDD {
         // 2^8 * 1 = 256 ways.
         runTest(solution, "Zeros in Input Case", new int[]{0,0,0,0,0,0,0,0,1}, 1, 256);
 
+
+
+        runTest(solution, "Target > Sum Case", new int[]{1}, 2, 0);
+
         System.out.println("All tests completed.");
     }
 
