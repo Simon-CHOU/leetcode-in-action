@@ -1,14 +1,19 @@
 package com.simon.hot100;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 /**
  * 394. 字符串解码 - TDD实现
  * <p>
- * 使用栈数据结构处理嵌套的编码字符串
+ * 使用Deque数据结构处理嵌套的编码字符串
+ * <p>
+ * 注意：官方推荐使用Deque替代已废弃的Stack类
  * <p>
  * 时间复杂度：O(n)，空间复杂度：O(n)
  *
  * @author Simon
- * @version 1.0
+ * @version 2.0
  */
 public class DecodeStringTDD {
 
@@ -21,9 +26,9 @@ public class DecodeStringTDD {
      * @return 解码后的字符串
      */
     public String decodeString(String s) {
-        // 使用双栈：数字栈和字符串栈
-        java.util.Stack<Integer> countStack = new java.util.Stack<>();
-        java.util.Stack<StringBuilder> stringStack = new java.util.Stack<>();
+        // 使用双栈：数字栈和字符串栈 - 使用Deque替代废弃的Stack
+        Deque<Integer> countStack = new ArrayDeque<>();
+        Deque<StringBuilder> stringStack = new ArrayDeque<>();
         
         StringBuilder currentString = new StringBuilder();
         int currentCount = 0;
@@ -173,6 +178,22 @@ public class DecodeStringTDD {
     }
     
     /**
+     * 数据结构选择说明
+     */
+    public static void explainDataStructure() {
+        System.out.println("=== 为什么使用Deque而不是Stack ===");
+        System.out.println("1. Stack类是遗留类，Java 1.2引入集合框架后已被标记为废弃");
+        System.out.println("2. Stack继承自Vector，同步开销大，性能较差");
+        System.out.println("3. Deque是接口，提供了更完整的栈操作API");
+        System.out.println("4. ArrayDeque作为Deque的实现，性能优于Stack");
+        System.out.println("5. 官方文档明确推荐使用Deque替代Stack");
+        System.out.println("Deque主要栈操作方法：");
+        System.out.println("- push(e)  // 入栈(相当于Stack.push)");
+        System.out.println("- pop()    // 出栈(相当于Stack.pop)");
+        System.out.println("- peek()   // 查看栈顶(相当于Stack.peek)");
+    }
+    
+    /**
      * 主方法 - 运行所有测试和演示
      */
     public static void main(String[] args) {
@@ -186,6 +207,9 @@ public class DecodeStringTDD {
         
         // 时间复杂度分析
         analyzeTimeComplexity();
+        
+        // 数据结构选择说明
+        explainDataStructure();
         
         System.out.println("=== 测试完成 ===");
     }
