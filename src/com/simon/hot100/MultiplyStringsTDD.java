@@ -35,15 +35,29 @@ public class MultiplyStringsTDD {
         // 消除前导零 res
 
         StringBuilder clr = new StringBuilder();
-        boolean flag= true;
-        for(int i : res) {
-            //高位到低位
-            if(flag && i == 0 ) {
-                flag =false;
-            }else {
-                clr.append(i);
+//        boolean flag= true;  // “我们是否还在寻找第一个非零数字
+//        for(int i : res) {
+//            //高位到低位
+//            if(flag && i == 0 ) {
+//                flag =false;
+//            }else {
+//                clr.append(i);
+//            }
+//        } // 998001 删除第一个0 编程了 99801 错误答案
+
+
+        // 正确的逻辑，不是“跳过第一个0", 而是查找的出第一个非0字符，后面直接拼接全部。
+        int p =0;
+        for(int i =0; i< res.length;i++) {
+            if(res[i] != 0 ) {
+                p =i;
+                break;
             }
         }
+        for (int i = p; i < res.length; i++) {
+            clr.append(res[i]);
+        }
+
         return clr.toString();
     }
 
