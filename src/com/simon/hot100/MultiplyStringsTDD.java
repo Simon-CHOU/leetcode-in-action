@@ -47,7 +47,7 @@ public class MultiplyStringsTDD {
 
 
         // 正确的逻辑，不是“跳过第一个0", 而是查找的出第一个非0字符，后面直接拼接全部。
-        int p =0;
+        int p =res.length - 1; // 特别处理，初值不为0， 避免0* 0 ="00"
         for(int i =0; i< res.length;i++) {
             if(res[i] != 0 ) {
                 p =i;
