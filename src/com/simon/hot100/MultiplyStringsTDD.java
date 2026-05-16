@@ -68,5 +68,8 @@ public class MultiplyStringsTDD {
         // 输入: num1 = "0", num2 = "0"
         //输出: "0"
         test("0" , solution.multiply("0", "0"));
+        // 输入: num1 = "999", num2 = "999"
+        //输出: "998001"
+        test("998001" , solution.multiply("999", "999"));
     }
 }
