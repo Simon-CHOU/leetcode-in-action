@@ -64,5 +64,9 @@ public class MultiplyStringsTDD {
         // 输入: num1 = "123", num2 = "456"
         //输出: "56088"
         test("56088" , solution.multiply("123", "456"));
+
+        // 输入: num1 = "0", num2 = "0"
+        //输出: "0"
+        test("0" , solution.multiply("0", "0"));
     }
 }
