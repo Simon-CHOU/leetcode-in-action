@@ -5,7 +5,18 @@ package com.simon.weekly;
  */
 public class CheckAdjacentDigitDifferencesTDD {
     public boolean isAdjacentDiffAtMostTwo(String s) {
-        return false;
+        final int maxDiff = 2;
+        char[] charArray = s.toCharArray();
+        if(s.length() <2) {
+            return false;
+        }
+        for (int i = 0; i < charArray.length -1; i++) {
+            int i1 = Math.abs(charArray[i] - charArray[i + 1]);
+            if(i1 >maxDiff) {
+                return  false;
+            }
+        }
+        return true;
     }
 
     static void test(boolean exp, boolean act) {
