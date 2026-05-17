@@ -39,12 +39,14 @@ public class CountKThRootsInARangeTDD {
             // 说明后面的 x 只会算出更大的幂，整个大循环应该彻底结束。
             if (power > r) {
                 // 这里应该写什么关键字来跳出最外层的 for 循环？
+                break;
             }
 
             // 【核心填空 2】：如果当前的 power 满足了我们翻译的不等式： l <= power <= r
             // 说明我们找到了一个合格的 y（即当前的 power）
             if (power >= l && power <= r) {
                 // 这里应该对 count 做什么操作？
+                count++;
             }
         }
 
