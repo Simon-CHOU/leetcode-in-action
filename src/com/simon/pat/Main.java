@@ -4,6 +4,8 @@ import java.util.*;
 
 /**
  * <a href="https://pintia.cn/problem-sets/994805342720868352/exam/problems/type/7?problemSetProblemId=994805526272000000">1002 A+B for Polynomials</a>
+ * https://gemini.google.com/gem/d9b9175d8ffc/a5adbc3c0c988877
+ * https://yuanbao.tencent.com/chat/naQivTmsDa/0Ni0HbTkCmm
  * <pre>
  *  2 1 2.4 0 3.2
  *  2 2 1.5 1 0.5
