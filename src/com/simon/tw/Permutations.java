@@ -39,15 +39,37 @@ class Solution46 { // https://www.bilibili.com/video/BV1oa4y1v7Kz/  官方解答
 
     }
 }
-
 public class Permutations {
     public static void main(String[] args) {
         int[] nums = {1, 2, 3};
         Solution46 solution = new Solution46();
         List<List<Integer>> res = solution.permute(nums);
+        test(List.of(
+                List.of(1, 2, 3),
+                List.of(1, 3, 2),
+                List.of(2, 1, 3),
+                List.of(2, 3, 1),
+                List.of(3, 1, 2),
+                List.of(3, 2, 1)), res);
+
+    }
+
+    private static void test(List<List<Integer>> exp, List<List<Integer>> act) {
+      if(exp.equals(act)) { // 判断全等
+          System.out.print("PASS!");
+          printPermutations(act);
+      }else {
+          System.out.print("FAIL!");
+          System.out.println("Expect: ");
+          printPermutations(exp);
+          System.out.println("Actual: ");
+          printPermutations(act);
+
+      }
+    }
+    private static void printPermutations(List<List<Integer>> res) {
         for (List<Integer> list : res) {
             System.out.println(list);
         }
-
     }
 }
