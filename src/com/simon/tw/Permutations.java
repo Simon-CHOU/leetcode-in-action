@@ -7,42 +7,34 @@ import java.util.List;
 
 class Solution46 { // https://www.bilibili.com/video/BV1oa4y1v7Kz/  官方解答
     public List<List<Integer>> permute(int[] nums) { // https://leetcode.cn/problems/permutations/
-        //use
-        int len = nums.length;
-        boolean used[] = new boolean[len];
+       //used
         // ans
-        List<List<Integer>> ans = new ArrayList<>();
+        // dfs
+        // path deque
         // depth
-        int depth= 0;
-        Deque<Integer> path = new ArrayDeque<>(); // removeLast 适合 Deque
-       dfs(nums, depth, used, path, ans);
-       return ans;
+//        for-each
+
+        List<List<Integer>> ans = new ArrayList<>();
+        Deque<Integer> path = new ArrayDeque<>();
+        int len =  nums.length;
+        boolean[] used = new boolean[len];
+        int depth = 0;
+        dfs(nums, depth, used,path, ans);
+        return ans;
     }
 
     private void dfs(int[] nums, int depth, boolean[] used, Deque<Integer> path, List<List<Integer>> ans) {
-        if(depth == nums.length) {
-//            ans.add(path.stream().toList());
-            ans.add(path.stream().toList());
+        if(depth== nums.length) {
+            ans.add(new ArrayList<>(path));
             return;
         }
-        for (int i = 0; i < nums.length; i++) { // 为什么有这个 loop, dfs 自身不够用吗？
-//            if(used[i]) {
-//                return; // 不是return;
-//            }
-            if(used[i]) {
-                continue;
-            }
-//            used[depth] = true;
-//            path.add(nums[depth]);
-//            dfs(nums, depth+1, used, path, ans);
-//            path.removeLast();
-//            used[depth] = false; // 不是 depth ，是i ，也是loop 的问题
+        for (int i = 0; i <nums.length; i++) {
+            if(used[i]) continue; // 不要漏掉拦截（即使我还不知道漏掉拦截意味着什么本质
             used[i] = true;
-//            path.add(nums[i]);// 不是add
-            path.addLast(nums[i]);
+            path.add(nums[i]);
             dfs(nums, depth+1, used, path, ans);
-            path.removeLast();
             used[i] = false;
+            path.removeLast();
         }
     }
 
