@@ -7,36 +7,46 @@ import java.util.List;
 
 class Solution46 { // https://www.bilibili.com/video/BV1oa4y1v7Kz/  官方解答
     public List<List<Integer>> permute(int[] nums) { // https://leetcode.cn/problems/permutations/
+        //use
         int len = nums.length;
+        boolean used[] = new boolean[len];
+        // ans
         List<List<Integer>> ans = new ArrayList<>();
-        if (len == 0) {
-            return ans;
-        }
-        Deque<Integer> path = new ArrayDeque<>(); // 栈
-        boolean[] used = new boolean[len];
-        dfs(nums, len, 0, path, used, ans);
-        return ans;
-
+        // depth
+        int depth= 0;
+        Deque<Integer> path = new ArrayDeque<>(); // removeLast 适合 Deque
+       dfs(nums, depth, used, path, ans);
+       return ans;
     }
 
-    void dfs(int[] nums, int len, int depth, Deque<Integer> path, boolean[] used, List<List<Integer>> ans) {
-        if (depth == len) {
-            ans.add(new ArrayList<>(path)
-            );// 拷贝 ，避免结果集出现空列表
+    private void dfs(int[] nums, int depth, boolean[] used, Deque<Integer> path, List<List<Integer>> ans) {
+        if(depth == nums.length) {
+//            ans.add(path.stream().toList());
+            ans.add(path.stream().toList());
             return;
         }
-        for (int i = 0; i < len; i++) {
-            if (used[i]) {
+        for (int i = 0; i < nums.length; i++) { // 为什么有这个 loop, dfs 自身不够用吗？
+//            if(used[i]) {
+//                return; // 不是return;
+//            }
+            if(used[i]) {
                 continue;
             }
-            path.addLast(nums[i]);
+//            used[depth] = true;
+//            path.add(nums[depth]);
+//            dfs(nums, depth+1, used, path, ans);
+//            path.removeLast();
+//            used[depth] = false; // 不是 depth ，是i ，也是loop 的问题
             used[i] = true;
-            dfs(nums, len, depth + 1, path, used, ans);
+//            path.add(nums[i]);// 不是add
+            path.addLast(nums[i]);
+            dfs(nums, depth+1, used, path, ans);
             path.removeLast();
             used[i] = false;
         }
-
     }
+
+
 }
 public class Permutations {
     public static void main(String[] args) {
@@ -54,7 +64,7 @@ public class Permutations {
                 List.of(1, 0)), new int[]{0,1});
         test(List.of(
                 List.of(1)), new int[]{1});
-        test(List.of(), new int[]{}); //怎么写exp对象？
+        test(List.of(List.of()), new int[]{}); //怎么写exp对象？
 
     }
 
