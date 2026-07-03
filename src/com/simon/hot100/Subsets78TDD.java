@@ -5,23 +5,19 @@ import java.util.*;
 public class Subsets78TDD {
 
     public List<List<Integer>> subsets(int[] nums) {
-        int len = nums.length;
         List<List<Integer>> ans = new ArrayList<>();
+        int startIndex = 0;
         Deque<Integer> path = new ArrayDeque<>();
-//        int depth = 0; // depth 是给全排列，到了n个数，下了第N层，再搜集结果用的判断条件；子集只需要遍历树（如何理解）？
-        int startIndex= 0;
-        dfs(nums, startIndex,  path, ans);
+        dfs(nums, startIndex, path, ans);
         return ans;
     }
 
     private void dfs(int[] nums, int startIndex, Deque<Integer> path, List<List<Integer>> ans) {
-        if(startIndex>nums.length) {return;}
-        ans.add(path.stream().toList());// 收集结果
-
-        // 递归退出条件是什么？是“范围限制”
-        for (int i = startIndex; i < nums.length; i++) { // startIndex 从这里开始循环
-            path.addLast(nums[i]); // 子集 和 全排列，都要遍历 nums
-            dfs(nums, i+1,path, ans); // startIndex -> i -> i++ 传递性 ； i+1 不是 i++！！！“先取值，后自增”
+        // 我又忘了递归退出条件
+        ans.add(path.stream().toList());
+        for (int i =startIndex; i < nums.length; i++) {  // 写反了     for (int i = 0; i < startIndex; i++) {
+            path.add(nums[i]);
+            dfs(nums,i+1, path, ans);
             path.removeLast();
         }
     }
