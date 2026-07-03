@@ -54,5 +54,13 @@ public class Subsets78TDD {
         // 输入：nums = [1,2,3]
         //输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
 
+        List<List<Integer>> exp2 = List.of(
+                List.of(),
+                List.of(0)
+        );
+        test(exp2, new int[]{0});
+        // 输入：nums = [0]
+        //输出：[[],[0]]
+
     }
 }
