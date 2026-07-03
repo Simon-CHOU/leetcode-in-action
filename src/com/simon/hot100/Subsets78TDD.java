@@ -1,9 +1,6 @@
 package com.simon.hot100;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
 public class Subsets78TDD {
 
@@ -30,10 +27,32 @@ public class Subsets78TDD {
     }
 
 
-    public static void main(String[] args) {
+    static void  test (List<List<Integer>> exp, int[] input) {
         Subsets78TDD solution = new Subsets78TDD();
-        List<List<Integer>> subsets = solution.subsets(new int[]{1, 2, 3});
-        subsets.forEach(System.out::println);
+        List<List<Integer>> subsets = solution.subsets(input);
+        if(new HashSet<>(subsets).equals(new HashSet<>(exp))) { // 归一化 normalize，避免顺序影响；
+            System.out.println("PASS!");
+            subsets.forEach(System.out::println);
+        } else {
+            System.out.print("FAIL!");
+            subsets.forEach(System.out::println);
+        }
+    }
+
+    public static void main(String[] args) {
+        List<List<Integer>> exp = List.of(
+                List.of(),
+                List.of(1),
+                List.of(2),
+                List.of(1,2),
+                List.of(3),
+                List.of(1,3),
+                List.of(2,3),
+                List.of(1,2,3)
+        );
+        test(exp, new int[]{1, 2, 3});
+        // 输入：nums = [1,2,3]
+        //输出：[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
 
     }
 }
