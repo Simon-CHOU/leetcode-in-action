@@ -18,8 +18,13 @@ public class CombinationsTDD {
     }
 
     private void backtrace(int n, int k, int start, Deque<Integer> path, List<List<Integer>>  ans) {
-        if(k== path.size()) {ans.add(path.stream().toList());}
-        for (int i = start; i <= n; i++) { // 勿忘<=等于
+        if(k== path.size()) {ans.add(path.stream().toList());
+
+            return; //剪枝，一定要加return
+        }
+
+        int upperLimit = n - (k - path.size())  +1 ;
+        for (int i = start; i <= upperLimit; i++) { // 勿忘<=等于  // 不剪枝性能恶劣        for (int i = start; i <= n; i++) { // 勿忘<=等于
             // choose
             path.add(i);
             // recursive
@@ -32,7 +37,7 @@ public class CombinationsTDD {
 
     public static void main(String[] args) {
         CombinationsTDD so = new CombinationsTDD();
-        List<List<Integer>> combine = so.combine(4, 2);
+        List<List<Integer>> combine = so.combine(100, 2);
         combine.forEach(System.out::println);
     }
 }
